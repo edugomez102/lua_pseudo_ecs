@@ -1,10 +1,14 @@
 local sys_ai = {}
 
-function sys_ai.update()
-  -- print("update ai")
+function sys_ai.init()
 end
 
-function sys_ai.update_one(e_p)
+local function update_one(e_p)
+end
+
+
+function sys_ai.update(storage)
+  -- print("update ai")
 end
 
 return sys_ai

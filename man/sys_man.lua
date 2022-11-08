@@ -1,13 +1,12 @@
-local sys_ai      = require("sys.ai")
-local sys_physics = require("sys.physics")
 
 --@class
 -- System Manager
 --
 SM = {
   systems = {
-    sys_ai,
-    sys_physics
+    require("sys.physics"),
+    require("sys.ai"),
+    require("sys.render")
   }
 }
 
