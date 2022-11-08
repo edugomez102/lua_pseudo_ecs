@@ -7,10 +7,12 @@ local CMP = require("cmp.cmp_all")
 EM:create_entity(e.new({
   type = "test",
   cmps = {
-    transform = CMP.transform:new({}),
-    physics   = CMP.physics:new({vx = 1, vy = 1})
+    transform = CMP.transform({}),
+    physics   = CMP.physics({vx = 1, vy = 1})
   }
 }))
+
+EM:create_entity(e.new({}))
 
 -- print(EM.storage[1].id)
 -- print(EM.storage[1].type)
@@ -23,4 +25,5 @@ while true do
   SM:update(EM.storage)
 
   print(EM.storage[1].cmps.transform.position.x)
+  print(EM.storage[2].id)
 end

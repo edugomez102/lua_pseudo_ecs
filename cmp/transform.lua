@@ -1,6 +1,9 @@
-local cmp_transform = {}
 
-function cmp_transform:new(o)
+--
+-- Transform component
+--
+
+return function(o)
   return{
     position = o.position or {
       x = 0,
@@ -16,5 +19,3 @@ function cmp_transform:new(o)
     }
   }
 end
-
-return cmp_transform

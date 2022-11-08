@@ -1,10 +1,10 @@
-local cmp_physics = {}
+--
+-- Physics component
+--
 
-function cmp_physics:new(o)
+return function(o)
   return {
     vx = o.vx or 0,
     vy = o.vy or 0,
   }
 end
-
-return cmp_physics
