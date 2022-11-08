@@ -1,5 +1,7 @@
 local sys_physics = {}
-require("modules.table_")
+
+function sys_physics.init()
+end
 
 local function update_one(p_e)
   local cmp_tra = p_e.cmps.transform

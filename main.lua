@@ -1,15 +1,14 @@
-local e  = require("man.entity")
-local EM = require("man.entity_man")
-local SM = require("man.sys_man")
-
-local cmp_transform  = require("cmp.transform")
-local cmp_physics    = require("cmp.physics")
+require("modules.table_")
+local e   = require("man.entity")
+local EM  = require("man.entity_man")
+local SM  = require("man.sys_man")
+local CMP = require("cmp.cmp_all")
 
 EM:create_entity(e.new({
   type = "test",
   cmps = {
-    transform = cmp_transform:new({}),
-    physics   = cmp_physics:new({vx = 1, vy = 1})
+    transform = CMP.transform:new({}),
+    physics   = CMP.physics:new({vx = 1, vy = 1})
   }
 }))
 

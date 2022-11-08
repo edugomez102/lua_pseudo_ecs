@@ -1,16 +1,16 @@
 local cmp_transform = {}
 
-function cmp_transform:new()
+function cmp_transform:new(o)
   return{
-    position = {
+    position = o.position or {
       x = 0,
       y = 0
     },
-    scale = {
+    scale = o.scale or {
       x = 0,
       y = 0
     },
-    rotation = {
+    rotation = o.rotation or {
       x = 0,
       y = 0
     }
