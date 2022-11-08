@@ -5,7 +5,7 @@
 
 return function(o)
   return{
-    position = o.position or {
+    pos = o.pos or {
       x = 0,
       y = 0
     },
