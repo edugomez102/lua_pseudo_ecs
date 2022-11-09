@@ -26,6 +26,20 @@ function table.has_value(t, element)
   return false
 end
 
+--- Find table inside table list with the following format
+--- t1 = { { key = val, ... }, {key = val, ... }, ... }
+---
+---@param t1 table list of tables
+---@param t2_key string key of t2 to check
+---@param t2_value any value of t2 to check
+function table.get_subtable(t1, t2_key, t2_value)
+  for i = 1, #t1 do
+    if t1[i][t2_key] and t1[i][t2_key] == t2_value then
+      return t1[i]
+    end
+  end
+end
+
 ---Counts number of elements in a table
 ---@param t table
 ---@param element any to check
