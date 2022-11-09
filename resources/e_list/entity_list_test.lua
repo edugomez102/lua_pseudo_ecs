@@ -2,11 +2,19 @@ local CMP = require("cmp.cmp_all")
 
 return {
   {
-    type = "test",
+    type = "player",
     cmps = {
-      transform = CMP.transform({}),
-      physics   = CMP.physics({vx = 1, vy = 0}),
-      render    = CMP.render({w = 40, h = 40})
+      transform = CMP.transform({pos = { x = 100, y = 100 }}),
+      physics   = CMP.physics({vx = 0, vy = 0}),
+      render    = CMP.render({w = 40, h = 40}),
+      input     = CMP.input({
+        keys = {
+          w = "move_up",
+          s = "move_down",
+          a = "move_left",
+          d = "move_right",
+        }
+      })
     }
   },
   {

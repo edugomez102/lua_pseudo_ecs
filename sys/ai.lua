@@ -3,7 +3,7 @@ local sys_ai = {}
 function sys_ai.init()
 end
 
-local function update_one(e_p)
+local function update_one(p_e)
 end
 
 

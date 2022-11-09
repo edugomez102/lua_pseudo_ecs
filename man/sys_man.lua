@@ -6,7 +6,8 @@ SM = {
   systems = {
     require("sys.physics"),
     require("sys.ai"),
-    require("sys.render")
+    require("sys.render"),
+    require("sys.input")
   }
 }
 
