@@ -10,7 +10,7 @@ return {
       physics   = CMP.physics{
         vx = 0,
         vy = 0,
-        vel = 5
+        vel = 2
       },
       render    = CMP.render{
         w = 40,
@@ -25,7 +25,9 @@ return {
           d = "move_right",
         }
       },
-      collision = CMP.collision{}
+      collision = CMP.collision{
+        beh = "test_one"
+      }
     }
   },
   {
@@ -40,6 +42,28 @@ return {
       },
       ai = CMP.ai{
         beh = "move_one"
+      },
+      collision = CMP.collision{}
+    }
+  },
+  {
+    type = "enemy",
+    cmps = {
+      transform = CMP.transform{
+        pos = {
+          x = 130, y = 400
+        }
+      },
+      physics = CMP.physics{vel = 3},
+      render    = CMP.render{
+        w = 40,
+        h = 40,
+        color = {0, 255, 0},
+      },
+      ai = CMP.ai{
+        beh = "move_one"
+      },
+      collision = CMP.collision{
       }
     }
   }

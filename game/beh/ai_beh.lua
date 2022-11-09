@@ -13,7 +13,7 @@ function ai_beh.move_two(p_e)
   local cmp_phy = p_e.cmps.physics
   cmp_phy.vx = -cmp_phy.vel
 
-  if p_e.cmps.transform.pos.x < 0 then
+  if p_e.cmps.transform.pos.x < 5 then
     p_e.cmps.ai.beh = "move_one"
   end
 
