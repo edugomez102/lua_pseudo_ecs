@@ -26,7 +26,6 @@ return {
         }
       },
       collision = CMP.collision{
-        beh = "test_one"
       }
     }
   },
@@ -43,7 +42,9 @@ return {
       ai = CMP.ai{
         beh = "move_one"
       },
-      collision = CMP.collision{}
+      collision = CMP.collision{
+        beh = "test_one"
+      }
     }
   },
   {
@@ -64,6 +65,7 @@ return {
         beh = "move_one"
       },
       collision = CMP.collision{
+        beh = "test_one"
       }
     }
   }

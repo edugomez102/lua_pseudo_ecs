@@ -35,10 +35,10 @@ local function check_player_collision(player, p_e)
   -- player cmps
   local p_cmp_tra = player.cmps.transform
   local p_cmp_ren = player.cmps.render
-  local p_cmp_col = player.cmps.collision
 
   local cmp_tra = p_e.cmps.transform
   local cmp_ren = p_e.cmps.render
+  local cmp_col = p_e.cmps.collision
 
   if p_cmp_tra.pos.x + p_cmp_ren.w >= cmp_tra.pos.x
      and
@@ -48,7 +48,7 @@ local function check_player_collision(player, p_e)
      and
      p_cmp_tra.pos.y <= cmp_tra.pos.y + cmp_ren.h
     then
-      col_beh[p_cmp_col.beh](p_e)
+      col_beh[cmp_col.beh](p_e)
   end
 end
 
@@ -76,7 +76,6 @@ function sys_collision.update(storage)
        check_player_collision(player, entity)
      end
   end
-
 end
 
 return sys_collision
