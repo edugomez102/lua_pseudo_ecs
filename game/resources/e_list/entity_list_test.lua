@@ -28,15 +28,19 @@ return {
       collision = CMP.collision{}
     }
   },
-  -- {
-  --   type = "test",
-  --   cmps = {
-  --     transform = CMP.transform{},
-  --     render    = CMP.render{
-  --       w = 60,
-  --       h = 10,
-  --       color = {0, 255, 0},
-  --     }
-  --   }
-  -- }
+  {
+    type = "enemy",
+    cmps = {
+      transform = CMP.transform{},
+      physics = CMP.physics{vel = 5},
+      render    = CMP.render{
+        w = 60,
+        h = 40,
+        color = {0, 255, 0},
+      },
+      ai = CMP.ai{
+        beh = "move_one"
+      }
+    }
+  }
 }

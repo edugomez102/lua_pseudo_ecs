@@ -1,6 +1,6 @@
 local e = require("man.entity")
 
-EM = {
+local EM = {
   storage = {},
   -- TODO check
   lists = {
