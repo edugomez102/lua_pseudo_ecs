@@ -13,7 +13,7 @@ SM = {
 
 function SM:init()
   for i = 1, #self.systems do
-    self.systems[i].init()
+    self.systems[i]:init()
   end
 end
 

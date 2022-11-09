@@ -4,7 +4,7 @@ EM = {
   storage = {},
   -- TODO check
   lists = {
-    test = require("resources.e_list.entity_list_test"),
+    test = require("game.resources.e_list.entity_list_test"),
   }
 }
 
