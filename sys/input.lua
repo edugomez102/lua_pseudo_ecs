@@ -11,6 +11,7 @@ local function update_one(p_e)
   function love.keypressed(kb)
     if table.has_key(cmp_inp.keys, kb) then
       input_funcs[cmp_inp.keys[kb]](cmp_phy)
+      -- cmp_inp.keys[kb](cmp_phy)
     end
   end
 
