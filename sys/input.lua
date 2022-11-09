@@ -1,7 +1,7 @@
 local sys_input = {}
 local input_funcs = require("game.input_funcs")
 
-function sys_input.init()
+function sys_input:init()
 end
 
 local function update_one(p_e)

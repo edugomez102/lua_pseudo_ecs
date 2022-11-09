@@ -1,6 +1,6 @@
 local sys_ai = {}
 
-function sys_ai.init()
+function sys_ai:init()
 end
 
 local function update_one(p_e)

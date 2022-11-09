@@ -1,6 +1,6 @@
 local sys_physics = {}
 
-function sys_physics.init()
+function sys_physics:init()
 end
 
 local function update_one(p_e)
