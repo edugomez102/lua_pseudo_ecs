@@ -4,16 +4,17 @@
 --
 SM = {
   systems = {
+    require("sys.render"),
     require("sys.physics"),
     require("sys.ai"),
-    require("sys.render"),
-    require("sys.input")
+    require("sys.input"),
+    require("sys.collision"),
   }
 }
 
 function SM:init()
   for i = 1, #self.systems do
-    self.systems[i]:init()
+    self.systems[i]:init(self.systems)
   end
 end
 

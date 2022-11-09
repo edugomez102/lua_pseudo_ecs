@@ -1,26 +1,34 @@
 local sys_input = {}
 local input_funcs = require("game.input_funcs")
 
-function sys_input:init()
+function sys_input:init(systems)
 end
 
 local function update_one(p_e)
   local cmp_inp = p_e.cmps.input
   local cmp_phy = p_e.cmps.physics
+  local active = false
 
-  function love.keypressed(kb)
-    if table.has_key(cmp_inp.keys, kb) then
-      input_funcs[cmp_inp.keys[kb]](cmp_phy)
-      -- cmp_inp.keys[kb](cmp_phy)
+  for key, value in pairs(cmp_inp.keys) do
+    if love.keyboard.isDown(key) then
+      input_funcs[value](cmp_phy)
+      active = true
     end
   end
 
   -- TODO improve
-  function love.keyreleased(kb)
-    if table.has_key(cmp_inp.keys, kb) then
-      input_funcs.reset(cmp_phy)
-    end
+  if not active then
+    input_funcs.reset(cmp_phy)
   end
+
+  -- function love.keypressed(kb)
+  --   if table.has_key(cmp_inp.keys, kb) then
+  --     input_funcs[cmp_inp.keys[kb]](cmp_phy)
+  --     -- cmp_inp.keys[kb](cmp_phy)
+  --   end
+  -- end
+  --
+
 end
 
 function sys_input.update(storage)

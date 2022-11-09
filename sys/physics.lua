@@ -1,6 +1,6 @@
 local sys_physics = {}
 
-function sys_physics:init()
+function sys_physics:init(systems)
 end
 
 local function update_one(p_e)
@@ -9,6 +9,8 @@ local function update_one(p_e)
 
   cmp_tra.pos.x = cmp_tra.pos.x + cmp_phy.vx
   cmp_tra.pos.y = cmp_tra.pos.y + cmp_phy.vy
+
+  print(cmp_tra.pos.x, cmp_tra.pos.y)
 
 end
 
