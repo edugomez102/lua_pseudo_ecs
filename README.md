@@ -3,6 +3,12 @@
 
 Simplification of an ECS engine using lua tables and the love2d library.
 
+# Setup
+
+love2d library is needed.
+
+run `love .` on main directory.
+
 # Folder Structure
 
 ## engine  
@@ -29,4 +35,4 @@ Depending on the game mechanics the following folders may change to achive the d
 
 # TODO
 
-- [  ] Animator system
+- [ ] Animator system
