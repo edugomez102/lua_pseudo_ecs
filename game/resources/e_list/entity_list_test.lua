@@ -1,4 +1,4 @@
-local CMP = require("cmp.cmp_all")
+local CMP = require("engine.cmp.cmp_all")
 
 return {
   {
@@ -10,7 +10,7 @@ return {
       physics   = CMP.physics{
         vx = 0,
         vy = 0,
-        vel = 2
+        vel = 5
       },
       render    = CMP.render{
         w = 40,
@@ -32,15 +32,14 @@ return {
   {
     type = "enemy",
     cmps = {
-      transform = CMP.transform{},
+      transform = CMP.transform{
+        pos = {x = 400 , y = 500}
+      },
       physics = CMP.physics{vel = 5},
       render    = CMP.render{
         w = 60,
         h = 40,
         color = {0, 255, 0},
-      },
-      ai = CMP.ai{
-        beh = "move_one"
       },
       collision = CMP.collision{
         beh = "test_one"

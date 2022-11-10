@@ -4,7 +4,7 @@ local sys_render = {
   w_w = 720
 }
 
-function sys_render:init(systems)
+function sys_render:init(Game)
   love.window.setMode(self.w_h, self.w_w)
   -- love.window.setFullscreen(true)
 end

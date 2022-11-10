@@ -1,12 +1,12 @@
 local sys_collision = {}
 
-local col_beh = require("game.beh.col_beh")
-
 -- TODO improve
 local max_w = 1280
 local max_h = 720
 
-function sys_collision:init(systems)
+local col_beh = {}
+function sys_collision:init(Game)
+  col_beh = Game.beh.col
 end
 
 --

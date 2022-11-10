@@ -1,11 +1,12 @@
 require("modules.table_")
--- local e   = require("man.entity")
-local EM  = require("man.entity_man")
-local SM  = require("man.sys_man")
+
+local Game = require("game.game")
+local EM   = require("engine.man.entity_man")
+local SM   = require("engine.man.sys_man")
 
 function love.load()
-  EM:init_from_list("test")
-  SM:init()
+  SM:init(Game)
+  Game:load_level(EM, "level_test")
 end
 
 function love.update(dt)

@@ -1,16 +1,26 @@
 local sys_physics = {}
 
-function sys_physics:init(systems)
+function sys_physics:init(Game)
 end
 
+local math_sqrt = math.sqrt
 local function update_one(p_e)
   local cmp_tra = p_e.cmps.transform
   local cmp_phy = p_e.cmps.physics
 
+  -- local len = math_sqrt(cmp_phy.vx * cmp_phy.vx + cmp_phy.vy * cmp_phy.vy)
+  -- print("len", len)
+
+  -- if len > 0 then
+  --   cmp_phy.vx = cmp_phy.vx / len
+  --   cmp_phy.vy = cmp_phy.vy / len
+  -- end
+
   cmp_tra.pos.x = cmp_tra.pos.x + cmp_phy.vx
   cmp_tra.pos.y = cmp_tra.pos.y + cmp_phy.vy
 
-  print(cmp_tra.pos.x, cmp_tra.pos.y)
+  -- print(cmp_phy.vx, cmp_phy.vy)
+  -- print(cmp_tra.pos.x, cmp_tra.pos.y)
 
 end
 

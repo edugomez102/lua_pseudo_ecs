@@ -1,7 +1,8 @@
 local sys_ai = {}
-local ai_beh = require("game.beh.ai_beh")
 
-function sys_ai:init()
+local ai_beh = {}
+function sys_ai:init(Game)
+  ai_beh = Game.beh.ai
 end
 
 local function update_one(p_e)

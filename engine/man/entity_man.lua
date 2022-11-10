@@ -1,11 +1,7 @@
-local e = require("man.entity")
+local e = require("engine.man.entity")
 
 local EM = {
   storage = {},
-  -- TODO check
-  lists = {
-    test = require("game.resources.e_list.entity_list_test"),
-  }
 }
 
 -- local function generate_cmps(p_cmp_list)
@@ -24,9 +20,10 @@ end
 --
 -- Creates entities of given list index of EM.lists
 -- 
-function EM:init_from_list(e_list_index)
-  for i = 1, #self.lists[e_list_index] do
-    self:create_entity(e.new(self.lists[e_list_index][i]))
+--@param e_list_index table with list of entities
+function EM:init_from_list(p_entity_list)
+  for i = 1, #p_entity_list do
+    self:create_entity(e.new(p_entity_list[i]))
 
     -- TODO improve
     -- local ent = self:create_entity(e.new({}))
