@@ -67,5 +67,22 @@ return {
         beh = "test_one"
       }
     }
-  }
+  },
+  {
+    type = E_TYPES.enemy,
+    cmps = {
+      transform = CMP.transform{
+        pos = {x = 200 , y = 500}
+      },
+      physics = CMP.physics{vel = 5},
+      render    = CMP.render{
+        w = 60,
+        h = 40,
+        color = {0, 255, 0},
+      },
+      collision = CMP.collision{
+        beh = "test_one"
+      }
+    }
+  },
 }

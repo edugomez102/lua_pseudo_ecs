@@ -32,14 +32,24 @@ function EM:init_from_list(p_entity_list)
   end
 end
 
--- TODO improve
 ---
 --- Checks for dead entities and removes them from storage
+--- Sets value of dead entity to nil and then shifts the storage array
 ---
 function EM:update()
-  for i = 1, #self.storage do
-    if self.storage[i].type == E_TYPES.dead then
-      table.remove(self.storage, i)
+  local stg = self.storage
+  local j = 1
+  local n = #stg
+
+  for i = 1, n do
+    if stg[i].type == E_TYPES.dead then
+      stg[i] = nil
+    else
+      if (i ~= j) then
+        stg[j] = stg[i]
+        stg[i] = nil
+      end
+      j = j + 1
     end
   end
 end
