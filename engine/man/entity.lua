@@ -6,7 +6,6 @@ local function get_next_id()
   return last_id
 end
 
-
 function e.new(o)
   return {
     id = get_next_id(),
@@ -16,9 +15,3 @@ function e.new(o)
 end
 
 return e
-
---[[ types
-  invalid
-  dead
---]]
-

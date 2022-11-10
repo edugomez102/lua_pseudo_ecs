@@ -25,7 +25,7 @@ function Game:init(EM, SM)
 end
 
 --- Creates entites for a level
----comment
+---
 ---@param EM table
 ---@param p_level string key of level list
 function Game:load_level(EM, p_level)
