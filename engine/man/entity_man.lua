@@ -32,17 +32,19 @@ function EM:init_from_list(p_entity_list)
   end
 end
 
+-- TODO improve
+---
+--- Checks for dead entities and removes them from storage
+---
 function EM:update()
-  -- check to delete
-end
-
-function EM.delete_entity()
+  for i = 1, #self.storage do
+    if self.storage[i].type == E_TYPES.dead then
+      table.remove(self.storage, i)
+    end
+  end
 end
 
 function EM.delete_all()
-end
-
-function EM.entity_set_for_destroy()
 end
 
 return EM

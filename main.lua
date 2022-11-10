@@ -12,8 +12,5 @@ end
 function love.update(dt)
   EM:update()
   SM:update(EM.storage)
-
-  -- print(EM.storage[1].cmps.transform.pos.x)
-  -- print(EM.storage[2].id)
 end
 

@@ -1,3 +1,5 @@
+require("game.entity_types")
+
 local Game = {
   systems = {},
   man     = {},

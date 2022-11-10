@@ -2,7 +2,7 @@ local CMP = require("engine.cmp.cmp_all")
 
 return {
   {
-    type = "player",
+    type = E_TYPES.player,
     cmps = {
       transform = CMP.transform{
         pos = { x = 100, y = 100 },
@@ -30,7 +30,7 @@ return {
     }
   },
   {
-    type = "enemy",
+    type = E_TYPES.enemy,
     cmps = {
       transform = CMP.transform{
         pos = {x = 400 , y = 500}
@@ -47,7 +47,7 @@ return {
     }
   },
   {
-    type = "enemy",
+    type = E_TYPES.enemy,
     cmps = {
       transform = CMP.transform{
         pos = {
