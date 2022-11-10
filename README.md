@@ -3,6 +3,15 @@
 
 Simplification of an ECS engine using lua tables and the love2d library.
 
+# Achieved
+
+- Entity and System Managers
+- Delete dead entities
+- Simple WASD input
+- Simple 2D collisions
+- Simple color rectangle render 
+- Level loader with a list of entities
+
 # Setup
 
 love2d library is needed.
