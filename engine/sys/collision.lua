@@ -1,8 +1,10 @@
 local sys_collision = {}
 
 -- TODO improve
-local max_w = 1280
-local max_h = 720
+local min_x = 0
+local min_y = 0
+local max_x = 1280
+local max_y = 720
 
 local col_beh = {}
 function sys_collision:init(Game)
@@ -14,22 +16,28 @@ end
 --
 local function check_border(p_e)
   local cmp_tra = p_e.cmps.transform
-  local cmp_phy = p_e.cmps.physics
   local cmp_ren = p_e.cmps.render
 
-  if(cmp_tra.pos.x >= max_w - cmp_ren.w or cmp_tra.pos.x <= 0) then
-    print("collision X")
-    cmp_phy.vx = 0
+  -- X
+  if(cmp_tra.pos.x <= min_x) then
+      cmp_tra.pos.x = min_x
   end
-  if(cmp_tra.pos.y >= max_h - cmp_ren.h or cmp_tra.pos.y <= 0) then
-    print("collision Y")
-    cmp_phy.vy = 0
+  if(cmp_tra.pos.x >= max_x - cmp_ren.w) then
+    cmp_tra.pos.x = max_x - cmp_ren.w
+  end
+
+  -- Y
+  if(cmp_tra.pos.y <= min_y) then
+    cmp_tra.pos.y = min_y
+  end
+  if(cmp_tra.pos.y >= max_y - cmp_ren.h) then
+    cmp_tra.pos.y = max_y - cmp_ren.h
   end
 end
 
 ---
 --- Checks position and size between player and other entities
---- if colliding, players col_beh is called
+--- if colliding, entities col_beh is called
 ---
 local function check_player_collision(player, p_e)
   -- player cmps
