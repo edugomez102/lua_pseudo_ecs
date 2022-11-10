@@ -92,4 +92,16 @@ function table.copy(t)
   return setmetatable(u, getmetatable(t))
 end
 
+---Returns a read only table
+---@param t table to make read only
+function table.protect(t)
+  return setmetatable({}, {
+    __index = t,
+    __newindex = function(_, key, value)
+      error("attempting to change constant " ..
+      tostring(key) .. " to " .. tostring(value), 2)
+    end
+  })
+end
+
 return table
