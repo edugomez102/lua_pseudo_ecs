@@ -2,7 +2,7 @@
 --@class
 -- System Manager
 --
-SM = {
+local SM = {
   systems = {
     require("engine.sys.render"),
     require("engine.sys.physics"),

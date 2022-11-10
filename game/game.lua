@@ -3,11 +3,14 @@ require("game.entity_types")
 local Game = {
   systems = {},
   man     = {},
-  beh     = {
+  utils = {
+    input_funcs = require("game.utils.input_funcs")
+  },
+  beh = {
     ai  = require("game.beh.ai_beh"),
     col = require("game.beh.col_beh")
   },
-  levels  = {
+  levels = {
     level_test = require("game.resources.e_list.entity_list_test"),
     level_01   = {}
   }

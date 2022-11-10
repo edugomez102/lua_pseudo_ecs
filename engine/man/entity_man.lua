@@ -1,5 +1,8 @@
 local e = require("engine.man.entity")
 
+--
+-- Entity Manager
+--
 local EM = {
   storage = {},
 }
