@@ -42,7 +42,7 @@ return {
         color = {0, 255, 0},
       },
       collision = CMP.collision{
-        beh = "test_one"
+        beh = "die"
       }
     }
   },
@@ -64,7 +64,7 @@ return {
         beh = "move_one"
       },
       collision = CMP.collision{
-        beh = "test_one"
+        beh = "change_color"
       }
     }
   },
@@ -81,7 +81,7 @@ return {
         color = {0, 255, 0},
       },
       collision = CMP.collision{
-        beh = "test_one"
+        beh = "die"
       }
     }
   },
