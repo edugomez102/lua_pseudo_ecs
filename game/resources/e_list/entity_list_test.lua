@@ -51,17 +51,20 @@ return {
     cmps = {
       transform = CMP.transform{
         pos = {
-          x = 130, y = 400
+          x = 10, y = 10
         }
       },
-      physics = CMP.physics{vel = 3},
+      physics = CMP.physics{vel = 5},
       render    = CMP.render{
         w = 40,
         h = 40,
         color = {0, 255, 0},
       },
       ai = CMP.ai{
-        beh = "move_one"
+        patrol = "patrol_02",
+        behs = {
+          move = "patrol_move",
+        }
       },
       collision = CMP.collision{
         beh = "change_color"

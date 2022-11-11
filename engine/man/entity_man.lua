@@ -1,8 +1,8 @@
 local e = require("engine.man.entity")
 
---
--- Entity Manager
---
+---
+--- Entity Manager
+---
 local EM = {
   storage = {},
 }
@@ -16,10 +16,10 @@ function EM:create_entity(p_e)
   return p_e
 end
 
---
--- Creates entities of given list
--- 
---@param e_list_index table with list of entities
+---
+--- Creates entities of given list
+--- 
+---@param p_entity_list table with list of entities
 function EM:init_from_list(p_entity_list)
   for i = 1, #p_entity_list do
     self:create_entity(e.new(p_entity_list[i]))
@@ -33,9 +33,9 @@ end
 ---
 function EM:update()
   local stg = self.storage
-  local j = 1
   local n = #stg
 
+  local j = 1
   for i = 1, n do
     if stg[i].type == E_TYPES.dead then
       stg[i] = nil

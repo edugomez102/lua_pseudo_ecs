@@ -4,8 +4,13 @@
 --
 
 return function(o)
+  -- list of posible ai behaviours
   return {
-    beh = o.beh or function()
-    end
+    step = 1,
+    patrol = o.patrol or nil,
+
+    behs = o.behs or {
+      move = function() end
+    }
   }
 end
