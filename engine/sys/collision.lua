@@ -6,7 +6,7 @@ local min_y = 0
 local max_x = 1280
 local max_y = 720
 
-local col_beh = {}
+local col_beh
 function sys_collision:init(Game)
   col_beh = Game.beh.col
 end

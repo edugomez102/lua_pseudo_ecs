@@ -1,6 +1,6 @@
 local sys_input = {}
 
-local input_funcs = {}
+local input_funcs
 function sys_input:init(Game)
   input_funcs = Game.utils.input_funcs
 end

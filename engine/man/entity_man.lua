@@ -7,6 +7,10 @@ local EM = {
   storage = {},
 }
 
+---
+--- Create and store entity in EM
+---
+---@return table entity
 function EM:create_entity(p_e)
   self.storage[#self.storage + 1] = p_e
   return p_e
