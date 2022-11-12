@@ -15,7 +15,8 @@ return {
       render    = CMP.render{
         w = 40,
         h = 40,
-        color = {255, 0 ,0},
+        color = {255, 255, 255},
+        sprite = "test"
       },
       input     = CMP.input{
         keys = {

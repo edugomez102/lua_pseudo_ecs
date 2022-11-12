@@ -2,7 +2,9 @@ require("game.entity_types")
 
 local Game = {
   systems = {},
-  man     = {},
+  man     = {
+    RM = require("game.man.resource_man")
+  },
   utils = {
     input_funcs = require("game.utils.input_funcs")
   },
