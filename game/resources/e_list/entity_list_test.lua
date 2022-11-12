@@ -24,6 +24,12 @@ return {
           s = "move_down",
           a = "move_left",
           d = "move_right",
+        },
+        gamepad = {
+          dpup    = "move_up",
+          dpdown  = "move_down",
+          dpleft  = "move_left",
+          dpright = "move_right"
         }
       },
       collision = CMP.collision{
