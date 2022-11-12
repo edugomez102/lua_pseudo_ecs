@@ -7,8 +7,8 @@ local rensysRM
 function sys_render:init(Game)
   rensysRM = Game.man.RM
 
-  love.window.setFullscreen(true)
-  -- love.window.setMode(self.w_h, self.w_w)
+  -- love.window.setFullscreen(true)
+  love.window.setMode(self.w_h, self.w_w)
 end
 
 local function update_one(p_e)
