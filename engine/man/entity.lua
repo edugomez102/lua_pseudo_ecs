@@ -6,6 +6,10 @@ local function get_next_id()
   return last_id
 end
 
+---
+--- Create entity
+---
+---@param o table entity template
 function e.new(o)
   return {
     id = get_next_id(),
