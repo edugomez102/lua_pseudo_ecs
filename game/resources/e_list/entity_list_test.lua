@@ -13,8 +13,8 @@ return {
         vel = 5
       },
       render    = CMP.render{
-        w = 40,
-        h = 40,
+        -- w = 40,
+        -- h = 40,
         color = {255, 255, 255},
         sprite = "test"
       },
@@ -27,6 +27,8 @@ return {
         }
       },
       collision = CMP.collision{
+        w = 40,
+        h = 40
       }
     }
   },
@@ -38,12 +40,14 @@ return {
       },
       physics = CMP.physics{vel = 5},
       render    = CMP.render{
-        w = 60,
-        h = 40,
+        w = 55,
+        h = 35,
         color = {0, 255, 0},
       },
       collision = CMP.collision{
-        beh = "die"
+        beh = "die",
+        w = 60,
+        h = 40,
       }
     }
   },
@@ -60,6 +64,7 @@ return {
         w = 40,
         h = 40,
         color = {0, 255, 0},
+        sprite = "test"
       },
       ai = CMP.ai{
         patrol = "patrol_02",
@@ -68,7 +73,9 @@ return {
         }
       },
       collision = CMP.collision{
-        beh = "change_color"
+        beh = "change_color",
+        w = 40,
+        h = 40,
       }
     }
   },
@@ -80,12 +87,14 @@ return {
       },
       physics = CMP.physics{vel = 5},
       render    = CMP.render{
-        w = 60,
-        h = 40,
+        w = 5,
+        h = 5,
         color = {0, 255, 0},
       },
       collision = CMP.collision{
-        beh = "die"
+        beh = "die",
+        w = 60,
+        h = 40
       }
     }
   },
