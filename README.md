@@ -19,6 +19,9 @@ love2d library is needed.
 
 run `love .` on main directory.
 
+# Shipping 🚢
+- **Windows**: Dive into the `scripts\` folder and run the `ship_windows.bat` (double-click is fine) 
+
 # Folder Structure
 
 ## engine  
