@@ -9,6 +9,7 @@ function love.load()
   Game:load_level(EM, "level_test")
 end
 
+-- TODO variable game framerate
 function love.update(dt)
   EM:update()
   SM:update(EM.storage)

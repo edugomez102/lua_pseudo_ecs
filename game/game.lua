@@ -27,6 +27,7 @@ end
 function Game:init(EM, SM)
 end
 
+---
 --- Creates entites for a level
 ---
 ---@param EM table

@@ -1,7 +1,7 @@
 
---@class
--- System Manager
---
+---
+--- System Manager
+---
 local SM = {
   systems = {
     require("engine.sys.render"),
