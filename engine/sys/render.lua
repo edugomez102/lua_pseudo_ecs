@@ -17,6 +17,7 @@ local function update_one(p_e)
 
   love.graphics.setColor(cmp_ren.color)
   love.graphics.rectangle("fill", cmp_tra.pos.x, cmp_tra.pos.y, cmp_ren.w, cmp_ren.h)
+  -- love.graphics.circle("fill", cmp_tra.pos.x, cmp_tra.pos.y, cmp_ren.w )
 
   -- TODO provisional
   if cmp_ren.sprite then
@@ -36,18 +37,21 @@ local function draw_entity_collider(p_e)
   love.graphics.rectangle("fill", cmp_tra.pos.x, cmp_tra.pos.y, cmp_col.w, cmp_col.h)
 end
 
-function sys_render.update(storage)
+function sys_render.update(storage, dt)
   function love.draw()
     for _, entity in pairs(storage) do
       if table.has_key(entity.cmps, "transform") and
          table.has_key(entity.cmps, "render"  ) then
 
         update_one(entity)
-        if table.has_key(entity.cmps, "collision") then
-         draw_entity_collider(entity)
-        end
+        -- if table.has_key(entity.cmps, "collision") then
+        --  draw_entity_collider(entity)
+        -- end
        end
     end
+
+    love.graphics.setColor(255, 255, 255)
+    love.graphics.print(tostring(dt * 3600))
   end
 end
 

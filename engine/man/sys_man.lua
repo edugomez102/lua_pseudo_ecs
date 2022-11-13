@@ -18,9 +18,9 @@ function SM:init(Game)
   end
 end
 
-function SM:update(storage)
+function SM:update(storage, dt)
   for i = 1, #self.systems do
-    self.systems[i].update(storage)
+    self.systems[i].update(storage, dt)
   end
 end
 

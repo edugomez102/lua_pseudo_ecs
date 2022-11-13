@@ -13,6 +13,10 @@ local EM = {
 ---@return table entity
 function EM:create_entity(p_e)
   self.storage[#self.storage + 1] = p_e
+
+  math.randomseed(os.clock() * 100000000000)
+  p_e.cmps.transform.pos.x = math.random(0, 1280 )
+  p_e.cmps.transform.pos.y = math.random(0, 720 )
   return p_e
 end
 

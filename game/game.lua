@@ -14,7 +14,7 @@ local Game = {
   },
   levels = {
     level_test = require("game.resources.e_list.entity_list_test"),
-    level_01   = {}
+    -- level_01   = {}
   }
 }
 

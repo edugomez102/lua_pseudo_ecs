@@ -8,6 +8,9 @@ return function(o)
   return {
     step = 1,
     patrol = o.patrol or nil,
+    aim = {
+      x = 0, y = 0
+    },
 
     behs = o.behs or {
       move = function() end

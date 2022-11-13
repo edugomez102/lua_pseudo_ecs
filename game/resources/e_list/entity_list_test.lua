@@ -38,70 +38,70 @@ return {
       }
     }
   },
-  {
-    type = E_TYPES.enemy,
-    cmps = {
-      transform = CMP.transform{
-        pos = {x = 400 , y = 500}
-      },
-      physics = CMP.physics{vel = 5},
-      render    = CMP.render{
-        w = 55,
-        h = 35,
-        color = {0, 255, 0},
-      },
-      collision = CMP.collision{
-        beh = "die",
-        w = 60,
-        h = 40,
-      }
-    }
-  },
-  {
-    type = E_TYPES.enemy,
-    cmps = {
-      transform = CMP.transform{
-        pos = {
-          x = 10, y = 10
-        }
-      },
-      physics = CMP.physics{vel = 5},
-      render    = CMP.render{
-        w = 40,
-        h = 40,
-        color = {0, 255, 0},
-        sprite = "test"
-      },
-      ai = CMP.ai{
-        patrol = "patrol_02",
-        behs = {
-          move = "patrol_move",
-        }
-      },
-      collision = CMP.collision{
-        beh = "change_color",
-        w = 40,
-        h = 40,
-      }
-    }
-  },
-  {
-    type = E_TYPES.enemy,
-    cmps = {
-      transform = CMP.transform{
-        pos = {x = 200 , y = 500}
-      },
-      physics = CMP.physics{vel = 5},
-      render    = CMP.render{
-        w = 5,
-        h = 5,
-        color = {0, 255, 0},
-      },
-      collision = CMP.collision{
-        beh = "die",
-        w = 60,
-        h = 40
-      }
-    }
-  },
+  -- {
+  --   type = E_TYPES.enemy,
+  --   cmps = {
+  --     transform = CMP.transform{
+  --       pos = {x = 400 , y = 500}
+  --     },
+  --     physics = CMP.physics{vel = 5},
+  --     render    = CMP.render{
+  --       w = 55,
+  --       h = 35,
+  --       color = {0, 255, 0},
+  --     },
+  --     collision = CMP.collision{
+  --       beh = "die",
+  --       w = 60,
+  --       h = 40,
+  --     }
+  --   }
+  -- },
+  -- {
+  --   type = E_TYPES.enemy,
+  --   cmps = {
+  --     transform = CMP.transform{
+  --       pos = {
+  --         x = 10, y = 10
+  --       }
+  --     },
+  --     physics = CMP.physics{vel = 1},
+  --     render    = CMP.render{
+  --       w = 40,
+  --       h = 40,
+  --       color = {0, 255, 0},
+  --       sprite = "test"
+  --     },
+  --     ai = CMP.ai{
+  --       patrol = "patrol_02",
+  --       behs = {
+  --         move = "move_to_randon",
+  --       }
+  --     },
+  --     collision = CMP.collision{
+  --       beh = "change_color",
+  --       w = 40,
+  --       h = 40,
+  --     }
+  --   }
+  -- },
+  -- {
+  --   type = E_TYPES.enemy,
+  --   cmps = {
+  --     transform = CMP.transform{
+  --       pos = {x = 200 , y = 500}
+  --     },
+  --     physics = CMP.physics{vel = 5},
+  --     render    = CMP.render{
+  --       w = 5,
+  --       h = 5,
+  --       color = {0, 255, 0},
+  --     },
+  --     collision = CMP.collision{
+  --       beh = "die",
+  --       w = 60,
+  --       h = 40
+  --     }
+  --   }
+  -- },
 }
