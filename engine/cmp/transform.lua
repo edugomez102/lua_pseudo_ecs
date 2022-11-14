@@ -4,7 +4,7 @@
 --
 
 return function(o)
-  return{
+  local cmp = {
     pos = o.pos or {
       x = 0,
       y = 0
@@ -18,4 +18,6 @@ return function(o)
       y = 0
     }
   }
+  table.check_invalid_fields(o, cmp, 2)
+  return cmp
 end
