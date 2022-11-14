@@ -104,4 +104,18 @@ function table.protect(t)
   })
 end
 
+--- Checks if o has fields that t doesnt, in that case
+--- raises error
+---
+---@param o table
+---@param t table
+---@param level integer stack level
+function table.check_invalid_fields(o, t, level)
+  for key, _ in pairs(o) do
+    if not t[key] then
+      error("no field " .. tostring(key), level)
+    end
+  end
+end
+
 return table
