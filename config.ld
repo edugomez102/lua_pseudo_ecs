@@ -5,7 +5,8 @@ ECS in lua
 file = {
   ".",
   exclude = {
-    "game/resources"
+    "game/resources",
+    "engine/cmp"
   }
 }
 format = 'discount'

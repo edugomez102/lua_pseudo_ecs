@@ -1,9 +1,8 @@
-
---
+------------
 -- Component constructors
 --
 
-CMP = {
+local CMP = {
   transform = require("engine.cmp.transform"),
   physics   = require("engine.cmp.physics"),
   render    = require("engine.cmp.render"),

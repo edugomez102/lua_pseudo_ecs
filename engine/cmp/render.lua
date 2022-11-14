@@ -1,5 +1,4 @@
-
---
+------------
 -- Render component
 --
 

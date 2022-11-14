@@ -1,5 +1,4 @@
-
---
+------------
 -- Collision component
 --
 
