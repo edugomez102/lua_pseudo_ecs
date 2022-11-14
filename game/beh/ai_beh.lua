@@ -1,4 +1,11 @@
+------------
+-- AI Behaviours.
+--
 local ai_beh = {}
+
+--- Funcs related to ai
+---@table ai_utils
+---@see game.beh.ai_utils
 local ai_utils = require("game.beh.ai_utils")
 
 function ai_beh.move_one(p_e)

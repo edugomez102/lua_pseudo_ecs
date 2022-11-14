@@ -1,5 +1,12 @@
+------------
+-- Physics System
+--
 local sys_physics = {}
 
+---
+--- Init system
+---
+---@param Game table
 function sys_physics:init(Game)
 end
 
@@ -24,6 +31,10 @@ local function update_one(p_e)
 
 end
 
+---
+--- Updates system
+---
+---@param storage table
 function sys_physics.update(storage)
   for _, entity in pairs(storage) do
     if table.has_key(entity.cmps, "transform") and

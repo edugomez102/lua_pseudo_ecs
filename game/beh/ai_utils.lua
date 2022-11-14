@@ -1,3 +1,7 @@
+------------
+-- AI Utils.
+-- Funcs reated to AI
+--@see game.beh.ai_beh
 local ai_utils = {}
 
 ---

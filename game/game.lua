@@ -1,12 +1,18 @@
+------------
+-- Game.
+-- Game manager.
+--@see game.entity_types
+
 require("game.entity_types")
 
+--- TODO
+---@table Game
 local Game = {
-  systems = {},
-  man     = {
-    RM = require("game.man.resource_man")
-  },
   utils = {
     input_funcs = require("game.utils.input_funcs")
+  },
+  man     = {
+    RM = require("game.man.resource_man")
   },
   beh = {
     ai  = require("game.beh.ai_beh"),

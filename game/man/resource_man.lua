@@ -1,9 +1,13 @@
----
---- Resource manager
----
+------------
+-- Resource manager.
+-- Table containing assets of the game
 
 local new_img = love.graphics.newImage
 
+---
+--- Manager of assets TODO
+---
+---@table RM
 local RM = {
   sprites = {
     test = new_img("game/assets/img/sprite_test.png"),

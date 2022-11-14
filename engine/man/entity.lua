@@ -1,6 +1,15 @@
+------------
+-- Entity
+--
 local e = {}
 
+--- integer last id of created entity
 local last_id = 0
+
+--- 
+--- Returns entity next id
+--- 
+---@return integer
 local function get_next_id()
   last_id = last_id + 1
   return last_id

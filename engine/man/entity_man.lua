@@ -1,3 +1,8 @@
+------------
+-- Entity Manager.
+-- Manager of ECS entities
+--@see engine.man.entity
+
 local e = require("engine.man.entity")
 local CMP = require("engine.cmp.cmp_all")
 

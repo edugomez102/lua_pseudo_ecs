@@ -1,6 +1,17 @@
+------------
+-- Input System
+--
 local sys_input = {}
 
+--- Contains input funcs 
+---@see game.utils.input_funcs
+---@table input_funcs 
 local input_funcs
+
+---
+--- Init system
+---
+---@param Game table
 function sys_input:init(Game)
   input_funcs = Game.utils.input_funcs
 end
@@ -42,6 +53,10 @@ local function update_one(p_e)
 
 end
 
+---
+--- Updates system
+---
+---@param storage table
 function sys_input.update(storage)
   for _, entity in pairs(storage) do
     if table.has_key(entity.cmps, "transform") and

@@ -1,12 +1,27 @@
+------------
+-- Collision System
+--
 local sys_collision = {}
 
--- TODO improve
-local min_x = 0
-local min_y = 0
-local max_x = 1280
-local max_y = 720
 
+--- Margins of screen
+---@table m
+local m = {
+  min_x = 0,      --- integer screen min x
+  min_y = 0,      --- integer screen min y
+  max_x = 1280,   --- integer screen max x
+  max_y = 720     --- integer screen max y
+}
+
+--- Contains entity collision funcs 
+---@see game.beh.col_beh
+---@table col_beh
 local col_beh
+
+---
+--- Init system
+---
+---@param Game table
 function sys_collision:init(Game)
   col_beh = Game.beh.col
 end
@@ -20,19 +35,19 @@ local function check_border(p_e)
   local cmp_col = p_e.cmps.collision
 
   -- X
-  if(cmp_tra.pos.x <= min_x) then
-      cmp_tra.pos.x = min_x
+  if(cmp_tra.pos.x <= m.min_x) then
+      cmp_tra.pos.x = m.min_x
   end
-  if(cmp_tra.pos.x >= max_x - cmp_col.w) then
-    cmp_tra.pos.x = max_x - cmp_col.w
+  if(cmp_tra.pos.x >= m.max_x - cmp_col.w) then
+    cmp_tra.pos.x = m.max_x - cmp_col.w
   end
 
   -- Y
-  if(cmp_tra.pos.y <= min_y) then
-    cmp_tra.pos.y = min_y
+  if(cmp_tra.pos.y <= m.min_y) then
+    cmp_tra.pos.y = m.min_y
   end
-  if(cmp_tra.pos.y >= max_y - cmp_col.h) then
-    cmp_tra.pos.y = max_y - cmp_col.h
+  if(cmp_tra.pos.y >= m.max_y - cmp_col.h) then
+    cmp_tra.pos.y = m.max_y - cmp_col.h
   end
 end
 
@@ -43,7 +58,6 @@ end
 ---@param player table
 ---@param p_e table entity to check for collision
 local function check_player_collision(player, p_e)
-  -- player cmps
   local p_cmp_tra = player.cmps.transform
   local p_cmp_col = player.cmps.collision
 
@@ -66,10 +80,14 @@ local function update_one(p_e)
   check_border(p_e)
 end
 
+---
+--- Updates system
+---
+---@param storage table entity storage
 function sys_collision.update(storage)
 
-  -- TODO move or improve
   local player = table.get_subtable(storage, "type", E_TYPES.player)
+  -- TODO move or improve
 
   for _, entity in pairs(storage) do
     if table.has_key(entity.cmps, "transform") and

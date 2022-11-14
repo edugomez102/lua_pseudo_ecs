@@ -1,15 +1,26 @@
+------------
+-- Render System
+--
 local sys_render = {
   w_h = 1280,
   w_w = 720
 }
 
-local rensysRM
+--- Game resouce manager
+---@table Game_RM
+local Game_RM
+
+---
+--- Init system
+---
+---@param Game table
 function sys_render:init(Game)
-  rensysRM = Game.man.RM
+  Game_RM = Game.man.RM
 
   -- love.window.setFullscreen(true)
   love.window.setMode(self.w_h, self.w_w)
 end
+
 
 local function update_one(p_e)
   local cmp_tra = p_e.cmps.transform
@@ -20,7 +31,7 @@ local function update_one(p_e)
 
   -- TODO provisional
   if cmp_ren.sprite then
-    love.graphics.draw(rensysRM.sprites[cmp_ren.sprite], cmp_tra.pos.x, cmp_tra.pos.y)
+    love.graphics.draw(Game_RM.sprites[cmp_ren.sprite], cmp_tra.pos.x, cmp_tra.pos.y)
   end
 end
 
@@ -36,6 +47,10 @@ local function draw_entity_collider(p_e)
   love.graphics.rectangle("fill", cmp_tra.pos.x, cmp_tra.pos.y, cmp_col.w, cmp_col.h)
 end
 
+---
+--- Updates system
+---
+---@param storage table
 function sys_render.update(storage)
   function love.draw()
     for _, entity in pairs(storage) do
