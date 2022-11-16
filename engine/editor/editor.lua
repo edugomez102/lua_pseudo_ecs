@@ -19,6 +19,9 @@ end
 --- Updates
 ---
 function Editor:update()
+  editor_funcs.style.basic()
+
+  editor_funcs.dock.test()
   for _, fun in pairs(editor_funcs.window) do
     fun(editor_EM, editor_SM)
   end
