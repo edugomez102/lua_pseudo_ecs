@@ -70,7 +70,9 @@ function sys_render.update(storage)
          table.has_key(entity.cmps, "render"  ) then
 
         update_one(entity)
-        if table.has_key(entity.cmps, "collision") then
+        if table.has_key(entity.cmps, "collision") and
+           Editor.bools.render_collider
+          then
           draw_entity_collider(entity)
         end
        end

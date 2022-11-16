@@ -1,5 +1,5 @@
 ------------
--- editor funcs
+-- Editor funcs
 --
 local editor_funcs = {
   style  = {},
@@ -15,8 +15,10 @@ function editor_funcs.style.basic()
   imgui.PushStyleVar("ImGuiStyleVar_WindowBorderSize", 1);
 end
 
-local num = 1.0
-local dockspace_id = 1
+-------------------------------------------------
+-- DockSpace
+-------------------------------------------------
+
 local dockspace_flags = {
   "ImGuiDockNodeFlags_PassthruCentralNode",
   "ImGuiDockNodeFlags_DockSpace"
@@ -57,17 +59,23 @@ editor_funcs.dock = {
   create_dockspace(3, 300, 0, 1280 - 300, 520)
 }
 
+-------------------------------------------------
+-- Windows
+-------------------------------------------------
+
+local num = 1.0
 function editor_funcs.window.hola(EM, SM)
-  imgui.SetNextWindowDockID(dockspace_id, "ImGuiCond_Once")
+  imgui.SetNextWindowDockID(1, "ImGuiCond_Once")
   imgui.Begin("si hombr")
   num = imgui.SliderInt("SliderInt", num, 1, #EM.storage);
   imgui.Text(table.dump(EM.storage[num]))
   imgui.End()
 end
 
-function editor_funcs.window.create(EM, SM)
-  imgui.SetNextWindowDockID(dockspace_id, "ImGuiCond_Once")
+function editor_funcs.window.create(EM, SM, bools)
+  imgui.SetNextWindowDockID(1, "ImGuiCond_Once")
   imgui.Begin("Create")
+  bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
   if imgui.Button("new") then
     EM:create_entity{
       type = E_TYPES.enemy,
@@ -102,7 +110,7 @@ function editor_funcs.window.create(EM, SM)
   imgui.End()
 end
 
-function editor_funcs.window.nono(EM, SM)
+function editor_funcs.window.nono(EM, SM, bools)
   imgui.SetNextWindowDockID(2, "ImGuiCond_Once")
   imgui.Begin("SM test")
   imgui.Text(table.dump(SM))
@@ -110,7 +118,7 @@ function editor_funcs.window.nono(EM, SM)
 
 end
 
-local scene_factor = 0.65
+local scene_factor = 0.65 -- TODO improve
 function editor_funcs.scene_window(canvas)
   imgui.SetNextWindowDockID(3, "ImGuiCond_Once")
   imgui.Begin("scene" )
