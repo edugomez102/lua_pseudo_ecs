@@ -64,11 +64,13 @@ editor_funcs.dock = {
 -------------------------------------------------
 
 local num = 1.0
-function editor_funcs.window.hola(EM, SM)
+local entity_editor = require("engine.editor.entity_editor")
+function editor_funcs.window.editor(EM, SM)
   imgui.SetNextWindowDockID(1, "ImGuiCond_Once")
-  imgui.Begin("si hombr")
+  imgui.Begin("Entity list")
   num = imgui.SliderInt("SliderInt", num, 1, #EM.storage);
   imgui.Text(table.dump(EM.storage[num]))
+  entity_editor(EM, SM, imgui, num)
   imgui.End()
 end
 
