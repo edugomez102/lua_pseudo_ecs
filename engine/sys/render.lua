@@ -2,9 +2,11 @@
 -- Render System
 --
 local sys_render = {
-  w_h = 1280,
-  w_w = 720
+  w_w = 1280,
+  w_h = 720
 }
+-- TODO make local
+canvas = nil
 
 ---@table Editor
 local Editor
@@ -20,8 +22,9 @@ local Game_RM
 function sys_render:init(Game)
   Game_RM = Game.man.RM
 
+  canvas = love.graphics.newCanvas(self.w_w, self.w_h)
   -- love.window.setFullscreen(true)
-  love.window.setMode(self.w_h, self.w_w)
+  love.window.setMode(self.w_w, self.w_h)
 end
 
 function sys_render.init_editor(p_Editor)
@@ -59,17 +62,26 @@ end
 ---@param storage table
 function sys_render.update(storage)
   function love.draw()
+    love.graphics.setCanvas(canvas)
+    love.graphics.clear(0, 0.1, 0, 1)
+
     for _, entity in pairs(storage) do
       if table.has_key(entity.cmps, "transform") and
          table.has_key(entity.cmps, "render"  ) then
 
         update_one(entity)
-        if table.has_key(entity.cmps, "collision") then
-         draw_entity_collider(entity)
-        end
+        -- if table.has_key(entity.cmps, "collision") then
+        --  draw_entity_collider(entity)
+        -- end
        end
     end
+
+    love.graphics.setCanvas()
+      -- -- love.graphics.setBlendMode("alpha")
+
     love.graphics.reset()
+
+    -- love.graphics.draw(canvas, 0, 0)
     Editor:update()
   end
 end

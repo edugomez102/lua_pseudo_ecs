@@ -22,21 +22,39 @@ local dockspace_flags = {
   "ImGuiDockNodeFlags_PassthruCentralNode",
   "ImGuiDockNodeFlags_DockSpace"
 }
+local dockwindow_flaggs = {
+  "ImGuiWindowFlags_NoTitleBar",
+  "ImGuiWindowFlags_NoCollapse",
+  "ImGuiWindowFlags_NoResize",
+  "ImGuiWindowFlags_NoMove",
+  "ImGuiWindowFlags_NoBringToFrontOnFocus",
+  "ImGuiWindowFlags_NoNavFocus",
+}
 
-function editor_funcs.dock.test(EM, SM)
+function editor_funcs.dock.test()
   imgui.SetNextWindowPos(0, 0)
-  imgui.SetNextWindowSize(300, 500)
+  imgui.SetNextWindowSize(300, 520)
 
-  imgui.Begin("DockSpace test", false,
-  {
-    "ImGuiWindowFlags_NoTitleBar",
-    "ImGuiWindowFlags_NoCollapse",
-    "ImGuiWindowFlags_NoResize",
-    "ImGuiWindowFlags_NoMove",
-    "ImGuiWindowFlags_NoBringToFrontOnFocus",
-    "ImGuiWindowFlags_NoNavFocus",
-  })
+  imgui.Begin("DockSpace test", true, dockwindow_flaggs)
   imgui.DockSpace(dockspace_id, 0, 0, dockspace_flags)
+  imgui.End()
+end
+
+function editor_funcs.dock.test2()
+  imgui.SetNextWindowPos(0, 520)
+  imgui.SetNextWindowSize(1280, 200)
+
+  imgui.Begin("DockSpace test2", false, dockwindow_flaggs)
+  imgui.DockSpace(2, 0, 0, dockspace_flags)
+  imgui.End()
+end
+
+function editor_funcs.dock.test3()
+  imgui.SetNextWindowPos(300, 0)
+  imgui.SetNextWindowSize(1280 - 300, 520)
+
+  imgui.Begin("DockSpace test3", false, dockwindow_flaggs)
+  imgui.DockSpace(3, 0, 0, dockspace_flags)
   imgui.End()
 end
 
@@ -64,8 +82,8 @@ function editor_funcs.window.create(EM, SM)
         render    = {
           w = 40,
           h = 40,
-          color = {0, 255, 0},
-          sprite = "test"
+          color = {255, 255, 255 },
+          -- sprite = "test"
         },
         ai = {
           patrol = "patrol_02",
@@ -82,6 +100,27 @@ function editor_funcs.window.create(EM, SM)
     }
   end
   imgui.Text("test")
+  imgui.End()
+end
+
+function editor_funcs.window.nono(EM, SM)
+  imgui.SetNextWindowDockID(2, "ImGuiCond_Once")
+  imgui.Begin("SM test")
+  imgui.Text(table.dump(SM))
+  imgui.End()
+
+end
+
+local scene_factor = 0.65
+function editor_funcs.window.scene(EM, SM)
+  imgui.PushStyleColor("ImGuiCol_WindowBg", 0, 0, 0, 1.0)
+  imgui.SetNextWindowDockID(3, "ImGuiCond_Once")
+  imgui.Begin("scene" )
+
+  imgui.BeginChild("game_scene")
+  imgui.Image(canvas, 1280 * scene_factor, 720 * scene_factor)
+  imgui.EndChild()
+
   imgui.End()
 end
 
