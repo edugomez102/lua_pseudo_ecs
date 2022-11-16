@@ -36,7 +36,7 @@ end
 ---
 ---@param storage table
 function sys_physics.update(storage)
-  for _, entity in pairs(storage) do
+  for i = 1, #storage do local entity = storage[i]
     if table.has_key(entity.cmps, "transform") and
        table.has_key(entity.cmps, "physics"  ) then
 

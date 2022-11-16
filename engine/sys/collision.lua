@@ -89,7 +89,7 @@ function sys_collision.update(storage)
   local player = table.get_subtable(storage, "type", E_TYPES.player)
   -- TODO move or improve
 
-  for _, entity in pairs(storage) do
+  for i = 1, #storage do local entity = storage[i]
     if table.has_key(entity.cmps, "transform") and
        table.has_key(entity.cmps, "collision") then
 
@@ -97,7 +97,7 @@ function sys_collision.update(storage)
      end
   end
 
-  for _, entity in pairs(storage) do
+  for i = 1, #storage do local entity = storage[i]
     if table.has_key(entity.cmps, "transform") and
        table.has_key(entity.cmps, "collision") and
        entity.type ~= E_TYPES.player then
