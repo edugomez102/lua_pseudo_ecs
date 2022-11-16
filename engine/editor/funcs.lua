@@ -4,7 +4,6 @@
 local editor_funcs = {
   style  = {},
   window = {},
-  dock = {}
 }
 local imgui
 function editor_funcs.init(p_imgui)
@@ -13,7 +12,7 @@ end
 
 function editor_funcs.style.basic()
   imgui.PushStyleVar("ImGuiStyleVar_WindowRounding", 0);
-  -- imgui.PushStyleVar("ImGuiStyleVar_WindowBorderSize", 0);
+  imgui.PushStyleVar("ImGuiStyleVar_WindowBorderSize", 1);
 end
 
 local num = 1.0
@@ -31,32 +30,32 @@ local dockwindow_flaggs = {
   "ImGuiWindowFlags_NoNavFocus",
 }
 
-function editor_funcs.dock.test()
-  imgui.SetNextWindowPos(0, 0)
-  imgui.SetNextWindowSize(300, 520)
-
-  imgui.Begin("DockSpace test", true, dockwindow_flaggs)
-  imgui.DockSpace(dockspace_id, 0, 0, dockspace_flags)
-  imgui.End()
+---
+--- Creates dock space
+---
+---@param x integer
+---@param y integer
+---@param w integer
+---@param h integer
+---@param id integer
+---@return function
+local function create_dockspace(id, x, y, w, h)
+  local ds = function()
+    imgui.SetNextWindowPos(x, y)
+    imgui.SetNextWindowSize(w, h)
+    imgui.Begin("DockSpace " .. id , true, dockwindow_flaggs)
+    imgui.DockSpace(id, 0, 0, dockspace_flags)
+    imgui.End()
+  end
+  return ds
 end
 
-function editor_funcs.dock.test2()
-  imgui.SetNextWindowPos(0, 520)
-  imgui.SetNextWindowSize(1280, 200)
-
-  imgui.Begin("DockSpace test2", false, dockwindow_flaggs)
-  imgui.DockSpace(2, 0, 0, dockspace_flags)
-  imgui.End()
-end
-
-function editor_funcs.dock.test3()
-  imgui.SetNextWindowPos(300, 0)
-  imgui.SetNextWindowSize(1280 - 300, 520)
-
-  imgui.Begin("DockSpace test3", false, dockwindow_flaggs)
-  imgui.DockSpace(3, 0, 0, dockspace_flags)
-  imgui.End()
-end
+--- array of dock_spaces, first arg is id
+editor_funcs.dock = {
+  create_dockspace(1, 0, 0, 300, 520),
+  create_dockspace(2, 0, 520, 1280, 200),
+  create_dockspace(3, 300, 0, 1280 - 300, 520)
+}
 
 function editor_funcs.window.hola(EM, SM)
   imgui.SetNextWindowDockID(dockspace_id, "ImGuiCond_Once")
@@ -113,7 +112,6 @@ end
 
 local scene_factor = 0.65
 function editor_funcs.window.scene(EM, SM)
-  imgui.PushStyleColor("ImGuiCol_WindowBg", 0, 0, 0, 1.0)
   imgui.SetNextWindowDockID(3, "ImGuiCond_Once")
   imgui.Begin("scene" )
 

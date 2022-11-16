@@ -22,9 +22,9 @@ function Editor:update()
   editor_funcs.style.basic()
 
   Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.1, 0.1, 0.1, 1.0)
-  editor_funcs.dock.test()
-  editor_funcs.dock.test2()
-  editor_funcs.dock.test3()
+  for i = 1, #editor_funcs.dock do
+    editor_funcs.dock[i]()
+  end
   Editor.imgui.PopStyleColor()
 
   Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.2, 0.2, 0.2, 1.0)
