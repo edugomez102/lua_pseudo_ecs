@@ -6,6 +6,9 @@ local sys_render = {
   w_w = 720
 }
 
+---@table Editor
+local Editor
+
 --- Game resouce manager
 ---@table Game_RM
 local Game_RM
@@ -21,6 +24,9 @@ function sys_render:init(Game)
   love.window.setMode(self.w_h, self.w_w)
 end
 
+function sys_render.init_editor(p_Editor)
+  Editor = p_Editor
+end
 
 local function update_one(p_e)
   local cmp_tra = p_e.cmps.transform
@@ -63,6 +69,8 @@ function sys_render.update(storage)
         end
        end
     end
+    love.graphics.reset()
+    Editor:update()
   end
 end
 
