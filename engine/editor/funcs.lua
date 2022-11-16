@@ -111,7 +111,7 @@ function editor_funcs.window.nono(EM, SM)
 end
 
 local scene_factor = 0.65
-function editor_funcs.window.scene(EM, SM)
+function editor_funcs.scene_window(canvas)
   imgui.SetNextWindowDockID(3, "ImGuiCond_Once")
   imgui.Begin("scene" )
 

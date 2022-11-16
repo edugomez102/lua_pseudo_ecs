@@ -6,7 +6,7 @@ local sys_render = {
   w_h = 720
 }
 -- TODO make local
-canvas = nil
+local canvas = nil
 
 ---@table Editor
 local Editor
@@ -70,19 +70,17 @@ function sys_render.update(storage)
          table.has_key(entity.cmps, "render"  ) then
 
         update_one(entity)
-        -- if table.has_key(entity.cmps, "collision") then
-        --  draw_entity_collider(entity)
-        -- end
+        if table.has_key(entity.cmps, "collision") then
+          draw_entity_collider(entity)
+        end
        end
     end
-
     love.graphics.setCanvas()
-      -- -- love.graphics.setBlendMode("alpha")
 
     love.graphics.reset()
 
     -- love.graphics.draw(canvas, 0, 0)
-    Editor:update()
+    Editor:update(canvas)
   end
 end
 
