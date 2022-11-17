@@ -19,13 +19,11 @@ function Editor.init(EM, SM)
 end
 
 ---
---- Sets style for imgui dockspaces and updates them
+--- Sets style for imgui dockspace and updates it
 ---
-local function update_dockspaces()
+local function update_dockspace()
   Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.1, 0.1, 0.1, 1.0)
-  for i = 1, #editor_funcs.dock do
-    editor_funcs.dock[i]()
-  end
+  editor_funcs.main_dockspace()
   Editor.imgui.PopStyleColor()
 end
 
@@ -48,7 +46,7 @@ end
 function Editor:update(canvas)
   editor_funcs.style.basic()
 
-  update_dockspaces()
+  update_dockspace()
   update_windows(canvas, Editor.bools)
 
   self.imgui.Render()

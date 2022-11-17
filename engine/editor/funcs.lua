@@ -31,33 +31,18 @@ local dockwindow_flaggs = {
   "ImGuiWindowFlags_NoBringToFrontOnFocus",
   "ImGuiWindowFlags_NoNavFocus",
 }
+local dockspace_id = 1
 
 ---
---- Creates dock space
+--- Create DockSpace to which all windws will dock
 ---
----@param x integer
----@param y integer
----@param w integer
----@param h integer
----@param id integer
----@return function
-local function create_dockspace(id, x, y, w, h)
-  local ds = function()
-    imgui.SetNextWindowPos(x, y)
-    imgui.SetNextWindowSize(w, h)
-    imgui.Begin("DockSpace " .. id , true, dockwindow_flaggs)
-    imgui.DockSpace(id, 0, 0, dockspace_flags)
-    imgui.End()
-  end
-  return ds
+function editor_funcs.main_dockspace()
+  imgui.SetNextWindowPos(0, 0)
+  imgui.SetNextWindowSize(1280, 720)
+  imgui.Begin("DockSpace " .. dockspace_id , true, dockwindow_flaggs)
+  imgui.DockSpace(dockspace_id, 0, 0, dockspace_flags)
+  imgui.End()
 end
-
---- array of dock_spaces, first arg is id
-editor_funcs.dock = {
-  create_dockspace(1, 0, 0, 300, 520),
-  create_dockspace(2, 0, 520, 1280, 200),
-  create_dockspace(3, 300, 0, 1280 - 300, 520)
-}
 
 -------------------------------------------------
 -- Windows
@@ -66,7 +51,6 @@ editor_funcs.dock = {
 local num = 1.0
 local entity_editor = require("engine.editor.entity_editor")
 function editor_funcs.window.editor(EM, SM)
-  imgui.SetNextWindowDockID(1, "ImGuiCond_Once")
   imgui.Begin("Entity list")
   num = imgui.SliderInt("SliderInt", num, 1, #EM.storage);
   imgui.Text(table.dump(EM.storage[num]))
@@ -75,7 +59,6 @@ function editor_funcs.window.editor(EM, SM)
 end
 
 function editor_funcs.window.create(EM, SM, bools)
-  imgui.SetNextWindowDockID(1, "ImGuiCond_Once")
   imgui.Begin("Create")
   bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
   if imgui.Button("new") then
@@ -113,18 +96,17 @@ function editor_funcs.window.create(EM, SM, bools)
 end
 
 function editor_funcs.window.nono(EM, SM, bools)
-  imgui.SetNextWindowDockID(2, "ImGuiCond_Once")
   imgui.Begin("SM test")
   imgui.Text(table.dump(SM))
   imgui.End()
-
 end
 
 local scene_factor = 0.65 -- TODO improve
 function editor_funcs.scene_window(canvas)
-  imgui.SetNextWindowDockID(3, "ImGuiCond_Once")
-  imgui.Begin("scene" )
-
+  imgui.Begin("Scene", false , "HorizontalScrollbar")
+  scene_factor = imgui.SliderFloat("Zoom", scene_factor, 0, 10)
+  imgui.SameLine()
+  if imgui.Button("Reset Zoom") then scene_factor = 0.65 end
   imgui.BeginChild("game_scene")
   imgui.Image(canvas, 1280 * scene_factor, 720 * scene_factor)
   imgui.EndChild()
