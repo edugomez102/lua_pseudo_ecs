@@ -46,6 +46,7 @@ end
 function Editor:update(canvas)
   editor_funcs.style.basic()
 
+  -- Editor.imgui.ShowDemoWindow()
   update_dockspace()
   update_windows(canvas, Editor.bools)
 

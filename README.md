@@ -19,6 +19,11 @@ love2d library is needed.
 
 run `love .` on main directory.
 
+## Editor branch
+
+To run the imgui editor, build love-imgui from this this repo https://github.com/Keyslam/love-imgui  
+Then add `imgui.so` to the main directory.
+
 # Shipping 🚢
 - **Windows**: Dive into the `scripts\` folder and run the `ship_windows.bat` (double-click is fine) 
 

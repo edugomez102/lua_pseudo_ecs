@@ -53,9 +53,14 @@ local entity_editor = require("engine.editor.entity_editor")
 function editor_funcs.window.editor(EM, SM)
   imgui.Begin("Entity list")
   num = imgui.SliderInt("SliderInt", num, 1, #EM.storage);
-  imgui.Text(table.dump(EM.storage[num]))
-  entity_editor(EM, SM, imgui, num)
+  if imgui.TreeNode("entity dump") then
+    imgui.Text(table.dump(EM.storage[num]))
+    imgui.TreePop()
+  end
   imgui.End()
+
+  -- TODO move
+  entity_editor(EM, SM, imgui, num)
 end
 
 function editor_funcs.window.create(EM, SM, bools)
