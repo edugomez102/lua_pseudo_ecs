@@ -57,6 +57,7 @@ function editor_funcs.window.editor(EM, SM)
     imgui.Text(table.dump(EM.storage[num]))
     imgui.TreePop()
   end
+  imgui.Separator()
   imgui.End()
 
   -- TODO move
@@ -115,6 +116,36 @@ function editor_funcs.scene_window(canvas)
   imgui.BeginChild("game_scene")
   imgui.Image(canvas, 1280 * scene_factor, 720 * scene_factor)
   imgui.EndChild()
+
+  imgui.End()
+end
+
+-- TODO improve
+local RM = require("game.man.resource_man")
+
+local rm_canvas = love.graphics.newCanvas(100, 100)
+function editor_funcs.window.rm()
+  imgui.Begin("Resource Manager")
+
+  for key, value in pairs(RM.sprites) do
+    rm_canvas = love.graphics.newCanvas(100, 100)
+    love.graphics.setCanvas(rm_canvas)
+      -- love.graphics.clear(0, 0, 0) TODO ???
+      love.graphics.draw(value)
+    love.graphics.setCanvas()
+
+    imgui.BeginGroup()
+    imgui.Bullet()
+    imgui.Image(rm_canvas, 40 , 40 )
+    imgui.SameLine()
+    imgui.Text(key)
+    imgui.EndGroup()
+    if (imgui.IsItemHovered()) then
+      imgui.BeginTooltip()
+      imgui.Image(rm_canvas, 300, 300)
+      imgui.EndTooltip()
+    end
+  end
 
   imgui.End()
 end
