@@ -74,6 +74,47 @@ function EM:update()
   end
 end
 
+-------------------------------------------------
+-- Static funcs
+-------------------------------------------------
+
+---
+--- Removes cmp from an entity and returns it
+---
+---@param p_e table
+---@param cmp_str string cmp name
+---@return table removed cmp
+---@raise when cmp_str is not in p_e
+function EM.delete_cmp(p_e, cmp_str)
+  if table.has_key(p_e.cmps, cmp_str) then
+    return table.remove_key(p_e.cmps, cmp_str)
+  else
+    error("no cmp " .. cmp_str .. " in entity with id " .. p_e.id, 2)
+  end
+end
+
+---
+--- Adds component to entity using default cmp constructor
+---
+---@param p_e table
+---@param cmp_str string component name
+function EM.add_cmp(p_e, cmp_str)
+  if CMP[cmp_str] then
+    p_e.cmps[cmp_str] = CMP[cmp_str]({})
+  else
+    error("no cmp " .. cmp_str, 2)
+  end
+end
+
+---
+--- Copy entity
+---
+---@param p_e_to_copy table entity to copy
+---@return table created entity
+function EM.copy_entity(p_e_to_copy)
+  return EM:create_entity(p_e_to_copy)
+end
+
 function EM.delete_all()
 end
 
