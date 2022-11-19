@@ -118,4 +118,45 @@ function table.check_invalid_fields(o, t, level)
   end
 end
 
+---
+--- Pretty dump of table
+---
+---@param t table table to dump
+---@param level string indetation level
+---@return string
+function table.dump(t, level)
+  if level == nil then level = "  " end
+  if type(t) == 'table' then
+    local s = '{\n'
+    for k,v in pairs(t) do
+      if type(k) ~= 'number' then
+        k = '"'.. k ..'"'
+      end
+        s = s .. level .. '['.. k ..'] = '
+        if type(v) == 'table' then
+          s = s .. table.dump(v, level .. "  ")
+        else
+          s = s .. table.dump(v, level)
+        end
+        s = s .. ',\n'
+    end
+    level = string.sub(level, 3, #level)
+    return s .. level .. '}'
+  else
+    return tostring(t)
+  end
+end
+
+---
+--- Delete entry from table by key
+---
+---@param t table
+---@param key string
+---@return any deleted value
+function table.remove_key(t, key)
+  local value = t[key]
+  t[key] = nil
+  return value
+end
+
 return table
