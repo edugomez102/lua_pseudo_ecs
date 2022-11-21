@@ -10,9 +10,14 @@ function editor_funcs.init(p_imgui)
   imgui = p_imgui
 end
 
-function editor_funcs.style.basic()
+function editor_funcs.style.push_basic()
   imgui.PushStyleVar("ImGuiStyleVar_WindowRounding", 0);
   imgui.PushStyleVar("ImGuiStyleVar_WindowBorderSize", 1);
+end
+
+function editor_funcs.style.pop_basic()
+  imgui.PopStyleVar()
+  imgui.PopStyleVar()
 end
 
 -------------------------------------------------
@@ -206,49 +211,12 @@ function editor_funcs.window.editor(EM, SM)
   --     ImGui::Indent(ImGui::GetTreeNodeToLabelSpacing());
   -- ImGui::TreePop();
   --
-  -- imgui.End()
 
+  imgui.End()
 end
 
 function editor_funcs.window.entity_editor(EM, SM, bools)
   entity_editor(EM, SM, imgui, num)
-end
-
-function editor_funcs.window.create(EM, SM, bools)
-  imgui.Begin("Create")
-  bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
-  if imgui.Button("new") then
-    EM:create_entity{
-      type = E_TYPES.enemy,
-      cmps = {
-        transform = {
-          pos = {
-            x = 10, y = 10
-          }
-        },
-        physics = {vel = 5},
-        render    = {
-          w = 40,
-          h = 40,
-          color = {255, 255, 255 },
-          -- sprite = "test"
-        },
-        ai = {
-          patrol = "patrol_02",
-          behs = {
-            move = "patrol_move",
-          }
-        },
-        collision = {
-          beh = "change_color",
-          w = 40,
-          h = 40,
-        }
-      }
-    }
-  end
-  imgui.Text("test")
-  imgui.End()
 end
 
 function editor_funcs.window.nono(EM, SM, bools)
@@ -279,7 +247,7 @@ function editor_funcs.window.dump(EM, SM, bools)
   imgui.Begin("Storage dump")
   imgui.Separator()
   for i = 1, #EM.storage do
-    imgui.Text(table.dump(EM.storage[i]))
+    imgui.Text(i .. ": " ..  table.dump(EM.storage[i]))
     imgui.Separator()
   end
   imgui.End()
@@ -335,5 +303,31 @@ function editor_funcs.window.rm()
 
   imgui.End()
 end
+
+-- TODO better entity creation
+
+local templates = require("engine.templates")
+function editor_funcs.window.create(EM, SM, bools)
+
+  imgui.Begin("Tools")
+  bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
+  if imgui.Button("new from t") then
+    EM:create_entity(table.deepcopy(templates.basic))
+  end
+
+  if imgui.Button("add 100") then
+    for _ = 1, 100 do
+      local e = EM:create_entity(table.deepcopy(templates.to_random))
+      math.randomseed(os.clock() * 100000000000)
+      -- TODO improve
+      e.cmps.transform.pos = {
+        x = math.random(0, 1280),
+        y = math.random(0, 720)
+      }
+    end
+  end
+  imgui.End()
+end
+
 
 return editor_funcs

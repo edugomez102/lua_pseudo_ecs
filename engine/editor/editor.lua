@@ -44,11 +44,13 @@ end
 --- Updates imgui
 ---
 function Editor:update(canvas)
-  editor_funcs.style.basic()
+  editor_funcs.style.push_basic()
 
   -- Editor.imgui.ShowDemoWindow()
   update_dockspace()
   update_windows(canvas, Editor.bools)
+
+  editor_funcs.style.pop_basic()
 
   self.imgui.Render()
 end
