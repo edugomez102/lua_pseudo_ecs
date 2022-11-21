@@ -3,7 +3,7 @@
 -- System of ECS entities.
 
 ---
---- Order in which systems will update
+--- System names and order in which they will update
 ---
 ---@table sys_index
 local sys_index = {
@@ -31,7 +31,7 @@ end
 --- System Manager TODO
 ---
 local SM = {
-  systems = load_sys()
+  systems = load_sys() -- TODO more clear
 }
 
 ---
