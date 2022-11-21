@@ -26,6 +26,12 @@ function ai_beh.move_two(p_e)
   end
 end
 
+function ai_beh.no_move(p_e)
+  local cmp_phy = p_e.cmps.physics
+  cmp_phy.vx = 0
+  cmp_phy.vy = 0
+end
+
 ---
 --- Follow a list of coords
 ---
@@ -50,6 +56,31 @@ function ai_beh.patrol_move(p_e)
     end
   end
 
+end
+
+function ai_beh.move_to_randon(p_e)
+  local cmp_tra = p_e.cmps.transform
+  local cmp_ai  = p_e.cmps.ai
+
+  -- local to_x = patrol[cmp_ai.step][1]
+  -- local to_y = patrol[cmp_ai.step][2]
+  -- print("x:" .. cmp_tra.pos.x, "y:" .. cmp_tra.pos.y ,"aimx:" .. cmp_ai.aim.x, "aimy:" .. cmp_ai.aim.y)
+
+  if(cmp_tra.pos.x  - cmp_ai.aim.x == 0 and cmp_tra.pos.y - cmp_ai.aim.y == 0 ) or
+    (cmp_ai.aim.x == 0 and cmp_ai.aim.y == 0) then
+
+    math.randomseed(os.clock() * 100000000000)
+    cmp_ai.aim.x = math.random(0, 1280)
+    cmp_ai.aim.y = math.random(0, 720)
+    p_e.cmps.render.color = {
+      -- 255, 0, 0
+      math.random(0, 255) / 255,
+      math.random(0, 255) / 255,
+      math.random(0, 255) / 255,
+    }
+  end
+
+  ai_utils.seek_to(p_e, cmp_ai.aim.x, cmp_ai.aim.y)
 end
 
 return ai_beh

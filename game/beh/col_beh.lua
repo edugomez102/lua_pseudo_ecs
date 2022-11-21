@@ -16,7 +16,12 @@ end
 ---
 ---@param p_e table
 function col_beh.change_color(p_e)
-  p_e.cmps.render.color = {100, 230, 0}
+  math.randomseed(os.clock() * 100000000000)
+  p_e.cmps.render.color = {
+    math.random(0, 255) / 255,
+    math.random(0, 255) / 255,
+    math.random(0, 255) / 255,
+  }
 end
 
 return col_beh
