@@ -92,6 +92,23 @@ function table.copy(t)
   return setmetatable(u, getmetatable(t))
 end
 
+---
+---Returns a deep copy of a table
+---
+---@param t table to copy
+function table.deepcopy(t, seen)
+    if type(t) ~= 'table' then return t end
+    if seen and seen[t] then return seen[t] end
+
+    local s = seen or {}
+    local res = {}
+    s[t] = res
+    for k, v in pairs(t) do
+      res[table.deepcopy(k, s)] = table.deepcopy(v, s)
+    end
+    return setmetatable(res, getmetatable(t))
+end
+
 ---Returns a read only table
 ---@param t table to make read only
 function table.protect(t)
