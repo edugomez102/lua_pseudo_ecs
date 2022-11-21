@@ -93,6 +93,8 @@ end
 function edit_cmp.ai(cmp, imgui)
   imgui.Text("cmp.ai")
   update_cmp_combo(imgui, cmp.behs, "move", "ai_beh")
+  cmp.aim.x, cmp.aim.y =
+  imgui.SliderInt2("aim", cmp.aim.x, cmp.aim.y, 0, 600)
 end
 
 function edit_cmp.collision(cmp, imgui)
