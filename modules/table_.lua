@@ -164,4 +164,16 @@ function table.dump(t, level)
   end
 end
 
+---
+--- Delete entry from table by key
+---
+---@param t table
+---@param key string
+---@return any deleted value
+function table.remove_key(t, key)
+  local value = t[key]
+  t[key] = nil
+  return value
+end
+
 return table
