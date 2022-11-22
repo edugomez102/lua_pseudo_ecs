@@ -12,7 +12,7 @@ return function(o)
     },
 
     behs = o.behs or {
-      move = function() end
+      move = nil
     }
   }
   table.check_invalid_fields(o, cmp, 2)
