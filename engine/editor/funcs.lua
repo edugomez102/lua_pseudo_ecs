@@ -10,6 +10,13 @@ function editor_funcs.init(p_imgui)
   imgui = p_imgui
 end
 
+local RM  = require("game.man.resource_man")
+local CMP = require("engine.cmp.cmp_all")
+
+-------------------------------------------------
+-- Style
+-------------------------------------------------
+
 function editor_funcs.style.push_basic()
   imgui.PushStyleVar("ImGuiStyleVar_WindowRounding", 0);
   imgui.PushStyleVar("ImGuiStyleVar_WindowBorderSize", 1);
@@ -38,7 +45,6 @@ local dockwindow_flaggs = {
 }
 local dockspace_id = 1
 
-local RM = require("game.man.resource_man")
 -- local render_fun = require("engine.sys.render").update_one
 local function entity_preview_selec(p_e)
   for key, _ in pairs(p_e.cmps) do
@@ -46,7 +52,7 @@ local function entity_preview_selec(p_e)
   end
   if table.has_key(p_e.cmps, "render") then
     local cmp_ren = p_e.cmps.render
-    local pv_canvas = love.graphics.newCanvas(80, 80)
+    local pv_canvas = love.graphics.newCanvas(50, 50)
     love.graphics.setCanvas(pv_canvas)
       -- render_fun(p_e)
         love.graphics.setColor(cmp_ren.color)
@@ -57,6 +63,38 @@ local function entity_preview_selec(p_e)
         love.graphics.reset()
     love.graphics.setCanvas()
     imgui.Image(pv_canvas, 80, 80)
+  end
+end
+
+---@param p_e table entity
+---@param choose_from table with keys to choose from
+---@param fun function
+local function cmp_submenu(p_e, choose_from, fun)
+  for key, _ in pairs(choose_from) do
+    if imgui.MenuItem(key) then
+      fun(p_e, key)
+    end
+  end
+end
+
+local function entity_right_click(e, EM)
+  entity_preview_selec(e)
+  imgui.Separator()
+  imgui.Text("entity id: " .. e.id)
+
+  if imgui.MenuItem("Copy entity") then
+    EM.copy_entity(table.deepcopy(e))
+  end
+  if imgui.BeginMenu("Add cmp") then
+    cmp_submenu(e, CMP , EM.add_cmp)
+    imgui.EndMenu()
+  end
+  if imgui.BeginMenu("Delete cmp") then
+    cmp_submenu(e, e.cmps, EM.delete_cmp)
+    imgui.EndMenu()
+  end
+  if imgui.MenuItem("Delete entity") then
+    e.type = E_TYPES.dead
   end
 end
 
@@ -137,16 +175,7 @@ function editor_funcs.window.editor(EM, SM)
     -- end
 
     if (imgui.BeginPopupContextItem()) then
-      imgui.Text("Hola " .. i)
-      -- if imgui.MenuItem("Click me") then end
-      -- if imgui.MenuItem("Click a") then end
-      if imgui.MenuItem("Delete") then
-        EM.storage[i].type = E_TYPES.dead
-      end
-      -- if imgui.BeginMenu("move to") then
-      -- if imgui.MenuItem("type 1") then end
-      --   imgui.EndMenu()
-      -- end
+      entity_right_click(e, EM)
       imgui.EndPopup()
     end
   end
@@ -313,6 +342,11 @@ function editor_funcs.window.create(EM, SM, bools)
   bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
   if imgui.Button("new from t") then
     EM:create_entity(table.deepcopy(templates.basic))
+  end
+  if imgui.Button("new empty") then
+    EM:create_entity({
+      type =  5
+    })
   end
 
   if imgui.Button("add 100") then
