@@ -56,6 +56,19 @@ local function draw_entity_collider(p_e)
   love.graphics.rectangle("fill", cmp_tra.pos.x, cmp_tra.pos.y, cmp_col.w, cmp_col.h)
 end
 
+-- patorl point and current aim
+local function draw_patrol_points(p_e)
+  local cmp_ai = p_e.cmps.ai
+  if cmp_ai.patrol == nil then return end
+  local patrol = require("game.resources.patrol_data")[cmp_ai.patrol]
+  love.graphics.setColor(0.8, 0, 0, 0.75)
+  for i = 1, #patrol do
+    love.graphics.rectangle("line", patrol[i][1], patrol[i][2], 10, 10)
+  end
+  love.graphics.setColor(0, 0.7, 0, 0.75)
+  love.graphics.rectangle("line", cmp_ai.aim.x, cmp_ai.aim.y, 10, 10)
+end
+
 ---
 --- Updates system
 ---
@@ -75,8 +88,14 @@ function sys_render.update(storage)
           then
           draw_entity_collider(entity)
         end
+        if table.has_key(entity.cmps, "ai") and
+           Editor.bools.render_patrol
+          then
+          draw_patrol_points(entity)
+        end
        end
     end
+
     love.graphics.setCanvas()
 
     love.graphics.reset()
