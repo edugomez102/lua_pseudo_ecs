@@ -146,19 +146,22 @@ function table.dump(t, level)
   if type(t) == 'table' then
     local s = '{\n'
     for k,v in pairs(t) do
-      if type(k) ~= 'number' then
-        k = '"'.. k ..'"'
-      end
+      if type(k) == 'number' then
         s = s .. level .. '['.. k ..'] = '
-        if type(v) == 'table' then
-          s = s .. table.dump(v, level .. "  ")
-        else
-          s = s .. table.dump(v, level)
-        end
-        s = s .. ',\n'
+      else
+        s = s .. level ..  k .. ' = '
+      end
+      if type(v) == 'table' then
+        s = s .. table.dump(v, level .. "  ")
+      else
+        s = s .. table.dump(v, level)
+      end
+      s = s .. ',\n'
     end
     level = string.sub(level, 3, #level)
     return s .. level .. '}'
+  elseif type(t) == "string" then
+    return '"' .. tostring(t) .. '"'
   else
     return tostring(t)
   end
@@ -174,6 +177,22 @@ function table.remove_key(t, key)
   local value = t[key]
   t[key] = nil
   return value
+end
+
+---
+--- Dump table to file adding return at start
+--- to use file as a module
+---
+---@param t table
+---@param path string
+function table.write_to_file(t, path)
+  local f = io.open(path, "w")
+  if f then
+    f:write("return ")
+    f:write(table.dump(t))
+    f:flush()
+    f:close()
+  end
 end
 
 return table
