@@ -5,6 +5,9 @@ local e = {}
 
 --- integer last id of created entity
 local last_id = 0
+function e.reset_last_id()
+  last_id = 0
+end
 
 --- 
 --- Returns entity next id

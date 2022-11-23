@@ -118,7 +118,13 @@ function EM.copy_entity(p_e_to_copy)
   return EM:create_entity(p_e_to_copy)
 end
 
-function EM.delete_all()
+-- TODO improve
+function EM:delete_all()
+  self.storage = {}
+  -- for i = 1, #EM.storage do local entity = EM.storage[i]
+  --   entity.type = E_TYPES.dead
+  -- end
+  e.reset_last_id()
 end
 
 return EM
