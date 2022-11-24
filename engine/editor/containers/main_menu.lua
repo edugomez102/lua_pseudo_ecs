@@ -17,12 +17,13 @@ local function scene_submenu(Editor, Game, EM)
   end
 end
 
-local show_storage_dump = false
+-- local show_storage_dump = false
 local new_scene_name = ""
 
 return function (Editor, EM, SM, Game)
   local imgui = Editor.imgui
   local info  = Editor.info
+  -- local show_storage_dump = Editor.bools.show_storage_dump
   if imgui.BeginMainMenuBar() then
     if imgui.BeginMenu("File") then
       if imgui.BeginMenu("Open Scene") then
@@ -55,6 +56,7 @@ return function (Editor, EM, SM, Game)
             entities = EM.storage
           }
           table.write_to_file(dump_t, path)
+          Game.current_scene = new_scene_name
           new_scene_name = ""
           Game:reload_scenes()
         end
@@ -65,8 +67,8 @@ return function (Editor, EM, SM, Game)
     end
 
     if imgui.BeginMenu("View") then
-      if imgui.MenuItem("Storage dump", "mini", show_storage_dump) then
-        show_storage_dump = not show_storage_dump
+      if imgui.MenuItem("Storage dump", "mini", Editor.bools.show_storage_dump) then
+        Editor.bools.show_storage_dump = not Editor.bools.show_storage_dump
       end
       imgui.EndMenu()
     end

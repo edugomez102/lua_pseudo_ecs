@@ -1,6 +1,6 @@
 
-local show_log_line = true
-local show_log_file = true
+local show_log_line = false
+local show_log_file = false
 
 return function (imgui)
   imgui.Begin("Log")

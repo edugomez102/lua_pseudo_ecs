@@ -4,8 +4,10 @@
 local Editor = {
   imgui = require("imgui"),
   bools = {
+    -- num = 1,
     render_collider = false,
-    render_patrol = true
+    render_patrol = false,
+    show_storage_dump = false
   },
   info = {
     dirty = false,
@@ -45,6 +47,7 @@ local function update_windows(canvas, bools)
   for _, fun in pairs(editor_funcs.window) do
     fun(editor_EM, editor_SM, bools)
   end
+  editor_funcs.log_window(Editor.imgui)
   Editor.imgui.PopStyleColor()
 end
 
@@ -52,16 +55,14 @@ end
 --- Updates imgui
 ---
 function Editor:update(canvas)
-  log(Editor.info, "Editor.info")
   editor_funcs.style.push_basic()
 
-  Editor.imgui.ShowDemoWindow()
+  -- Editor.imgui.ShowDemoWindow()
   editor_funcs.main_menu(Editor, editor_EM,
     editor_SM, editor_Game)
 
   update_dockspace()
   update_windows(canvas, Editor.bools)
-  editor_funcs.log_window(Editor.imgui)
 
   editor_funcs.style.pop_basic()
 

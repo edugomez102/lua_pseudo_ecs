@@ -57,7 +57,7 @@ end
 function edit_cmp.transform(cmp, imgui)
   imgui.Text("cmp.tra")
   cmp.pos.x, cmp.pos.y =
-  imgui.SliderInt2("trs pos", cmp.pos.x, cmp.pos.y, 0, 600)
+  imgui.SliderInt2("trs pos", cmp.pos.x, cmp.pos.y, 0, 1080)
   cmp.scale.x, cmp.scale.y =
   imgui.SliderInt2("tra scale", cmp.scale.x, cmp.scale.y, 0, 200)
   cmp.rotation.x, cmp.rotation.y =
@@ -86,15 +86,31 @@ function edit_cmp.render(cmp, imgui)
 end
 
 function edit_cmp.input(cmp, imgui)
-  imgui.Text("keys " .. table.dump(cmp.keys))
-  imgui.Text("gamepad " .. table.dump(cmp.gamepad))
+  for key, value in pairs(cmp.keys) do
+    if love.keyboard.isDown(key) then
+      imgui.PushStyleColor("ImGuiCol_Text", 1, 0, 0, 1)
+      imgui.Text(key)
+      imgui.PopStyleColor()
+    else
+      imgui.Text(key)
+    end
+    imgui.SameLine()
+    imgui.Text(": " .. value)
+  end
+  imgui.Separator()
+
+  for key, value in pairs(cmp.gamepad) do
+    imgui.Text(key .. ": " .. value)
+  end
+  -- imgui.Text("keys " .. table.dump(cmp.keys))
+  -- imgui.Text("gamepad " .. table.dump(cmp.gamepad))
 end
 
 function edit_cmp.ai(cmp, imgui)
   imgui.Text("cmp.ai")
   update_cmp_combo(imgui, cmp.behs, "move", "ai_beh")
   cmp.aim.x, cmp.aim.y =
-  imgui.SliderInt2("aim", cmp.aim.x, cmp.aim.y, 0, 600)
+  imgui.SliderInt2("aim", cmp.aim.x, cmp.aim.y, 0, 1080)
 end
 
 function edit_cmp.collision(cmp, imgui)

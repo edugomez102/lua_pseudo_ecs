@@ -57,6 +57,8 @@ editor_funcs.log_window = require("engine.editor.containers.log_win")
 
 -- local render_fun = require("engine.sys.render").update_one
 local function entity_preview_selec(p_e)
+  imgui.Text("type: " .. p_e.type)
+  imgui.Spacing()
   for key, _ in pairs(p_e.cmps) do
     imgui.Text(key)
   end
@@ -93,26 +95,29 @@ local function entity_right_click(p_e, EM)
   entity_preview_selec(p_e)
 
   imgui.Separator()
-  if imgui.MenuItem("New empty entity") then
-    EM:create_entity({ type =  5 })
-  end
-  imgui.Separator()
-  imgui.Text("entity id: " .. p_e.id)
+  -- if imgui.MenuItem("New empty entity") then
+  --   EM:create_entity({ type =  5 })
+  -- end
+  -- imgui.Text("entity id: " .. p_e.id)
 
   if imgui.MenuItem("Copy entity") then
     EM.copy_entity(table.deepcopy(p_e))
   end
-  if imgui.BeginMenu("Add cmp") then
+  imgui.Separator()
+  if imgui.BeginMenu("CMP add") then
     cmp_submenu(p_e, CMP , EM.add_cmp)
     imgui.EndMenu()
   end
-  if imgui.BeginMenu("Delete cmp") then
+  if imgui.BeginMenu("CMP delete") then
     cmp_submenu(p_e, p_e.cmps, EM.delete_cmp)
     imgui.EndMenu()
   end
+  imgui.Separator()
+  imgui.PushStyleColor("ImGuiCol_Text", 0.7, 0.3, 0.3, 1)
   if imgui.MenuItem("Delete entity") then
     p_e.type = E_TYPES.dead
   end
+  imgui.PopStyleColor()
   if imgui.BeginMenu("Make template") then
     local templates = require("engine.templates")
     temp_str = imgui.InputText("key", temp_str, 128)
@@ -156,12 +161,13 @@ local function get_entity_names(EM)
     local has_name = false
     for key, name in pairs(info.entity_names) do
       if key  == e.id then
-        entity_names[#entity_names+1] = "  name: " .. name .. " ID: " .. e.id
+        entity_names[#entity_names+1] = "ID: " .. e.id .. "  " .. name
         has_name = true
       end
     end
     if not has_name then
-      entity_names[#entity_names+1] = "  num: " .. i .. " type:" .. e.type .. "    ID: " .. e.id
+      -- entity_names[#entity_names+1] = "num: " .. i .. " type:" .. e.type .. "    ID: " .. e.id
+      entity_names[#entity_names+1] = "ID: " .. e.id
     end
   end
   return entity_names
@@ -209,6 +215,7 @@ function editor_funcs.window.editor(EM, SM)
   -- imgui.PushStyleColor("ImGuiCol_Text", 0, 0, 1, 1)
   -- imgui.PopStyleColor()
 
+  imgui.PushStyleColor("ImGuiCol_Header", 0.8, 1, 0.4, 0.3)
   for i = 1, #EM.storage do local e = EM.storage[i]
     if not list_multi_select and imgui.Selectable(entity_names[i],
       num == i,
@@ -243,6 +250,7 @@ function editor_funcs.window.editor(EM, SM)
       imgui.EndPopup()
     end
   end
+  imgui.PopStyleColor()
 
   if imgui.BeginPopup("entity_selection_popup") then
     imgui.Text("popup")
@@ -354,9 +362,11 @@ function editor_funcs.window.dump(EM, SM, bools)
     imgui.TreePop()
   end
   imgui.End()
+end
 
-  if show_storage_dump then
-    show_storage_dump = imgui.Begin("Storage dump", show_storage_dump)
+function editor_funcs.window.storage_dump(EM, SM, bools)
+  if bools.show_storage_dump then
+    bools.show_storage_dump = imgui.Begin("Storage dump", bools.show_storage_dump)
     imgui.Separator()
     for i = 1, #EM.storage do
       imgui.Text(i .. ": " ..  table.dump(EM.storage[i]))
@@ -366,14 +376,13 @@ function editor_funcs.window.dump(EM, SM, bools)
   end
 end
 
-
 local rm_canvas = love.graphics.newCanvas(100, 100)
 local rm_size = 40
 -- local path_str = ""
 -- local sprite_key = ""
 function editor_funcs.window.rm()
   imgui.Begin("Resource Manager")
-  rm_size = imgui.SliderInt("rm_size", rm_size, 5, 50)
+  -- rm_size = imgui.SliderInt("rm_size", rm_size, 5, 50)
   -- path_str = imgui.InputText("path", path_str, 128)
   -- sprite_key = imgui.InputText("key", sprite_key, 128)
   -- if(imgui.Button("Load Sprite")) then
@@ -410,24 +419,21 @@ function editor_funcs.window.create(EM, SM, bools)
 
   bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
   bools.render_patrol = imgui.Checkbox("render_patrol", bools.render_patrol)
-  if imgui.Button("new from t") then
+  if imgui.Button("new player") then
+    EM:create_entity(table.deepcopy(templates.player_01))
+  end
+  if imgui.Button("new patrol") then
     EM:create_entity(table.deepcopy(templates.basic))
   end
-  if imgui.Button("new empty") then
-    EM:create_entity({
-      type =  5
-    })
-  end
-  log(templates, "templates")
-
-  if imgui.Button("add 100") then
+  -- log(templates, "templates")
+  if imgui.Button("add 100 random") then
     for _ = 1, 100 do
       local e = EM:create_entity(table.deepcopy(templates.to_random))
       math.randomseed(os.clock() * 100000000000)
       -- TODO improve
       e.cmps.transform.pos = {
-        x = math.random(0, 1280),
-        y = math.random(0, 720)
+        x = math.random(0, 1920),
+        y = math.random(0, 1080)
       }
     end
   end

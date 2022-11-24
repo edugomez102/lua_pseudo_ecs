@@ -10,7 +10,7 @@ local scene_win_overlay_flags = {
 }
 
 -- TOOD drag work with zoom
-local scene_zoom = .90 -- TODO improve
+local scene_zoom = .60 -- TODO improve
 local function scene_overlay(Editor, storage)
   local imgui = Editor.imgui
 
@@ -18,7 +18,7 @@ local function scene_overlay(Editor, storage)
   Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.8, 0.2, 0.2, 0.4)
 
   imgui.Begin("over scene", false, scene_win_overlay_flags)
-  imgui.PushStyleColor("ImGuiCol_Button", 0.8, 0.9, 0.3, 0.4)
+  imgui.PushStyleColor("ImGuiCol_Button", 0.8, 0.9, 0.3, 0.0)
   imgui.PushStyleColor("ImGuiCol_ButtonHovered", 0.8, 0.9, 0.3, 0.4)
   imgui.PushStyleColor("ImGuiCol_ButtonActive", 0.8, 0.9, 0.3, 0.8)
   local m_x, m_y = imgui.GetMousePos()
@@ -67,7 +67,7 @@ return function (Editor, canvas, storage)
   scn_win.size.x, scn_win.size.y = imgui.GetContentRegionAvail()
   -- scn_win.pos.x, scn_win.pos.y   = imgui.GetCursorPos()
   scn_win.pos.x, scn_win.pos.y   = imgui.GetWindowPos()
-  imgui.Image(canvas, 1280 * scene_zoom, 720 * scene_zoom)
+  imgui.Image(canvas, 1920 * scene_zoom, 1080 * scene_zoom)
   imgui.EndChild()
   Editor.imgui.PopStyleColor()
 
