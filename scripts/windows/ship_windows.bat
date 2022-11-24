@@ -1,5 +1,6 @@
 @echo off
 cd ..
+cd ..
 
 @REM Removing past builds if that is the case 
 rd /s /q shipping/game_win64
