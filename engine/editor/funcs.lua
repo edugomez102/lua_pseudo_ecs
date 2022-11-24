@@ -89,7 +89,6 @@ local function cmp_submenu(p_e, choose_from, fun)
   end
 end
 
-local test_num = 0
 local temp_str  = ""
 local function entity_right_click(p_e, EM)
   entity_preview_selec(p_e)
@@ -145,7 +144,7 @@ end
 
 -------------------------------------------------
 
-local num = 1.0
+-- local num = 1.0
 local selection = { false, false}
 local entity_names = {}
 local list_multi_select = false
@@ -166,14 +165,13 @@ local function get_entity_names(EM)
       end
     end
     if not has_name then
-      -- entity_names[#entity_names+1] = "num: " .. i .. " type:" .. e.type .. "    ID: " .. e.id
       entity_names[#entity_names+1] = "ID: " .. e.id
     end
   end
   return entity_names
 end
 
-function editor_funcs.window.editor(EM, SM)
+function editor_funcs.window.editor(EM, SM, bools)
   imgui.Begin("Entity list")
   list_multi_select = imgui.Checkbox("multi select", list_multi_select)
   imgui.SameLine()
@@ -185,7 +183,7 @@ function editor_funcs.window.editor(EM, SM)
   imgui.Separator()
   imgui.Text("Total: " .. #EM.storage)
   imgui.SameLine()
-  imgui.Text("Selected ID: " .. num)
+  imgui.Text("Selected ID: " .. bools.num)
   -- info.entity_names[EM.storage[num].id] =
   -- imgui.InputText("Name", info.entity_names[EM.storage[num].id], 128)
   imgui.Separator()
@@ -218,14 +216,14 @@ function editor_funcs.window.editor(EM, SM)
   imgui.PushStyleColor("ImGuiCol_Header", 0.8, 1, 0.4, 0.3)
   for i = 1, #EM.storage do local e = EM.storage[i]
     if not list_multi_select and imgui.Selectable(entity_names[i],
-      num == i,
+      bools.num == i,
       -- selection[i],
       "ImGuiSelectableFlags_AllowDoubleClick") then
       if imgui.IsMouseDoubleClicked(0) then
         print("doble")
         selection[i] = not selection[i]
       end
-      num = i
+      bools.num = i
     end
 
     if list_multi_select and imgui.Selectable(entity_names[i],
@@ -335,7 +333,7 @@ end
 
 local entity_editor = require("engine.editor.entity_editor")
 function editor_funcs.window.entity_editor(EM, SM, bools)
-  entity_editor(EM, SM, imgui, num)
+  entity_editor(EM, SM, imgui, bools.num)
 end
 
 function editor_funcs.window.nono(EM, SM, bools)
@@ -346,7 +344,7 @@ end
 
 function editor_funcs.window.dump(EM, SM, bools)
   imgui.Begin("entity dump")
-  local entity = EM.storage[num]
+  local entity = EM.storage[bools.num]
   if entity == nil then return end
   imgui.Text("ID: " .. entity.id)
   imgui.Text("type: " .. entity.type)
@@ -358,7 +356,7 @@ function editor_funcs.window.dump(EM, SM, bools)
   end
   imgui.Separator()
   if imgui.TreeNode("Full entity dump") then
-    imgui.Text(table.dump(EM.storage[num]))
+    imgui.Text(table.dump(EM.storage[bools.num]))
     imgui.TreePop()
   end
   imgui.End()

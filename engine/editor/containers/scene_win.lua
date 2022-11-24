@@ -9,28 +9,53 @@ local scene_win_overlay_flags = {
   "ImGuiWindowFlags_NoDocking",
 }
 
--- TOOD drag work with zoom
 local scene_zoom = .60 -- TODO improve
+local function entity_marker(p_e)
+  if table.has_key(p_e.cmps, "collision") then
+    return {
+      x = p_e.cmps.collision.w * scene_zoom,
+      y = p_e.cmps.collision.h * scene_zoom,
+    }
+  end
+  if table.has_key(p_e.cmps, "render") then
+    return {
+      x = p_e.cmps.render.w * scene_zoom,
+      y = p_e.cmps.render.h * scene_zoom,
+    }
+  end
+end
+
+-- TOOD drag work with zoom
 local function scene_overlay(Editor, storage)
   local imgui = Editor.imgui
 
   -- TODO fit imgui.Image
-  Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.8, 0.2, 0.2, 0.4)
-
-  imgui.Begin("over scene", false, scene_win_overlay_flags)
-  imgui.PushStyleColor("ImGuiCol_Button", 0.8, 0.9, 0.3, 0.0)
+  imgui.PushStyleColor("ImGuiCol_WindowBg", 0.8, 0.2, 0.2, 0.4)
   imgui.PushStyleColor("ImGuiCol_ButtonHovered", 0.8, 0.9, 0.3, 0.4)
   imgui.PushStyleColor("ImGuiCol_ButtonActive", 0.8, 0.9, 0.3, 0.8)
+  imgui.PushStyleVar("ImGuiStyleVar_FrameBorderSize", 1.5)
+
+  imgui.Begin("over scene", false, scene_win_overlay_flags)
   local m_x, m_y = imgui.GetMousePos()
   for i = 1, #storage do local e = storage[i]
     if table.has_key(e.cmps, "transform") and
        table.has_key(e.cmps, "render"  ) then
       local cmp_tra = e.cmps.transform
+      local btn_size = {x = 10, y = 10}
       imgui.SetCursorPos(
         cmp_tra.pos.x * scene_zoom,
         cmp_tra.pos.y * scene_zoom)
 
-      imgui.Button("## ov" .. e.id, 10, 10)
+      if Editor.bools.num == e.id then
+        btn_size = entity_marker(e)
+        imgui.PushStyleColor("ImGuiCol_Border", 1.0, 1.0, 0.0, 1.0)
+        imgui.PushStyleColor("ImGuiCol_Button", 0.8, 0.0, 0.0, 0.2)
+      else
+        imgui.PushStyleColor("ImGuiCol_Border", 0, 0, 0, 0)
+        imgui.PushStyleColor("ImGuiCol_Button", 0, 0, 0, 0)
+      end
+      if imgui.Button("## ov" .. e.id, btn_size.x, btn_size.y)
+        then Editor.bools.num = e.id end
       if imgui.IsItemActive() then
         -- TODO fixed margin
         cmp_tra.pos.x = (m_x - 20) / scene_zoom
@@ -44,9 +69,14 @@ local function scene_overlay(Editor, storage)
         imgui.Text(cmp_tra.pos.x .. ", " .. cmp_tra.pos.y)
         imgui.EndTooltip()
       end
+      imgui.PopStyleColor()
+      imgui.PopStyleColor()
      end
   end
-  for _ = 1, 4 do imgui.PopStyleColor() end
+  imgui.PopStyleColor()
+  imgui.PopStyleColor()
+  imgui.PopStyleColor()
+  imgui.PopStyleVar()
   imgui.End()
 end
 

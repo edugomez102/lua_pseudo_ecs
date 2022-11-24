@@ -4,7 +4,7 @@
 local Editor = {
   imgui = require("imgui"),
   bools = {
-    -- num = 1,
+    num = 1,
     render_collider = false,
     render_patrol = false,
     show_storage_dump = false
