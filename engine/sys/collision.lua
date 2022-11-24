@@ -9,8 +9,8 @@ local sys_collision = {}
 local m = {
   min_x = 0,      --- integer screen min x
   min_y = 0,      --- integer screen min y
-  max_x = 1280,   --- integer screen max x
-  max_y = 720     --- integer screen max y
+  max_x = 1920,   --- integer screen max x
+  max_y = 1080     --- integer screen max y
 }
 
 --- Contains entity collision funcs 
@@ -100,7 +100,7 @@ function sys_collision.update(storage)
   for _, entity in pairs(storage) do
     if table.has_key(entity.cmps, "transform") and
        table.has_key(entity.cmps, "collision") and
-       entity.type ~= E_TYPES.player then
+       entity.type ~= E_TYPES.player and player then
 
        check_player_collision(player, entity)
      end

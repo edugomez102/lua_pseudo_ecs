@@ -70,8 +70,8 @@ function ai_beh.move_to_randon(p_e)
     (cmp_ai.aim.x == 0 and cmp_ai.aim.y == 0) then
 
     math.randomseed(os.clock() * 100000000000)
-    cmp_ai.aim.x = math.random(0, 1280)
-    cmp_ai.aim.y = math.random(0, 720)
+    cmp_ai.aim.x = math.random(0, 1920)
+    cmp_ai.aim.y = math.random(0, 1080)
     p_e.cmps.render.color = {
       -- 255, 0, 0
       math.random(0, 255) / 255,

@@ -2,8 +2,8 @@
 -- Render System
 --
 local sys_render = {
-  w_w = 1280,
-  w_h = 720
+  w_w = 1920,
+  w_h = 1080
 }
 -- TODO make local
 local canvas = nil
@@ -63,10 +63,10 @@ local function draw_patrol_points(p_e)
   local patrol = require("game.resources.patrol_data")[cmp_ai.patrol]
   love.graphics.setColor(0.8, 0, 0, 0.75)
   for i = 1, #patrol do
-    love.graphics.rectangle("line", patrol[i][1], patrol[i][2], 10, 10)
+    love.graphics.rectangle("line", patrol[i][1], patrol[i][2], 15, 15)
   end
   love.graphics.setColor(0, 0.7, 0, 0.75)
-  love.graphics.rectangle("line", cmp_ai.aim.x, cmp_ai.aim.y, 10, 10)
+  love.graphics.rectangle("line", cmp_ai.aim.x, cmp_ai.aim.y, 15, 15)
 end
 
 ---
