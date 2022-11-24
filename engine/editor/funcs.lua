@@ -5,13 +5,17 @@ local editor_funcs = {
   style  = {},
   window = {},
 }
+
 local imgui
-function editor_funcs.init(p_imgui)
+local info
+function editor_funcs.init(p_imgui, p_info)
   imgui = p_imgui
+  info = p_info
 end
 
 local RM  = require("game.man.resource_man")
 local CMP = require("engine.cmp.cmp_all")
+local utils = require("engine.editor.utils")
 
 -------------------------------------------------
 -- Style
@@ -30,20 +34,26 @@ end
 -------------------------------------------------
 -- DockSpace
 -------------------------------------------------
+editor_funcs.main_dockspace = require("engine.editor.containers.dockspace")
 
-local dockspace_flags = {
-  "ImGuiDockNodeFlags_PassthruCentralNode",
-  "ImGuiDockNodeFlags_DockSpace"
-}
-local dockwindow_flaggs = {
-  "ImGuiWindowFlags_NoTitleBar",
-  "ImGuiWindowFlags_NoCollapse",
-  "ImGuiWindowFlags_NoResize",
-  "ImGuiWindowFlags_NoMove",
-  "ImGuiWindowFlags_NoBringToFrontOnFocus",
-  "ImGuiWindowFlags_NoNavFocus",
-}
-local dockspace_id = 1
+-------------------------------------------------
+-- Menu bar
+-------------------------------------------------
+editor_funcs.main_menu = require("engine.editor.containers.main_menu")
+
+-------------------------------------------------
+-- Scene window
+-------------------------------------------------
+editor_funcs.scene_window = require("engine.editor.containers.scene_win")
+
+-------------------------------------------------
+-- Log window
+-------------------------------------------------
+editor_funcs.log_window = require("engine.editor.containers.log_win")
+
+-------------------------------------------------
+-- Windows common
+-------------------------------------------------
 
 -- local render_fun = require("engine.sys.render").update_one
 local function entity_preview_selec(p_e)
@@ -77,62 +87,116 @@ local function cmp_submenu(p_e, choose_from, fun)
   end
 end
 
-local function entity_right_click(e, EM)
-  entity_preview_selec(e)
+local test_num = 0
+local temp_str  = ""
+local function entity_right_click(p_e, EM)
+  entity_preview_selec(p_e)
+
   imgui.Separator()
-  imgui.Text("entity id: " .. e.id)
+  if imgui.MenuItem("New empty entity") then
+    EM:create_entity({ type =  5 })
+  end
+  imgui.Separator()
+  imgui.Text("entity id: " .. p_e.id)
 
   if imgui.MenuItem("Copy entity") then
-    EM.copy_entity(table.deepcopy(e))
+    EM.copy_entity(table.deepcopy(p_e))
   end
   if imgui.BeginMenu("Add cmp") then
-    cmp_submenu(e, CMP , EM.add_cmp)
+    cmp_submenu(p_e, CMP , EM.add_cmp)
     imgui.EndMenu()
   end
   if imgui.BeginMenu("Delete cmp") then
-    cmp_submenu(e, e.cmps, EM.delete_cmp)
+    cmp_submenu(p_e, p_e.cmps, EM.delete_cmp)
     imgui.EndMenu()
   end
   if imgui.MenuItem("Delete entity") then
-    e.type = E_TYPES.dead
+    p_e.type = E_TYPES.dead
+  end
+  if imgui.BeginMenu("Make template") then
+    local templates = require("engine.templates")
+    temp_str = imgui.InputText("key", temp_str, 128)
+    imgui.SameLine()
+    if imgui.Button("Make templte ##btn") then
+      templates[temp_str] = p_e
+      table.write_to_file(templates, "engine/templates.lua")
+      temp_str = ""
+    end
+    imgui.EndMenu()
+  end
+  -- TODO aaaaaaaaa
+  if imgui.BeginMenu("Change name") then
+    utils.help_marker(imgui, "Selection widget resets on change so there is no name preview");
+    temp_str =
+    imgui.InputText("name", temp_str , 128)
+    if imgui.Button("Confirm") then
+      info.entity_names[p_e.id] = temp_str
+      temp_str = ""
+    end
+    imgui.EndMenu()
   end
 end
 
----
---- Create DockSpace to which all windws will dock
----
-function editor_funcs.main_dockspace()
-  imgui.SetNextWindowPos(0, 0)
-  imgui.SetNextWindowSize(1280, 720)
-  imgui.Begin("DockSpace " .. dockspace_id , true, dockwindow_flaggs)
-  imgui.DockSpace(dockspace_id, 0, 0, dockspace_flags)
-  imgui.End()
-end
 
 -------------------------------------------------
--- Windows
--------------------------------------------------
-
-local entity_agrupation = {}
 
 local num = 1.0
-local entity_editor = require("engine.editor.entity_editor")
 local selection = { false, false}
 local entity_names = {}
 local list_multi_select = false
 
+local nodes = {
+  false, false, true, true
+}
+local node_clicked = -1
+
+local function get_entity_names(EM)
+  local entity_names = {}
+  for i = 1, #EM.storage do local e = EM.storage[i]
+    local has_name = false
+    for key, name in pairs(info.entity_names) do
+      if key  == e.id then
+        entity_names[#entity_names+1] = "  name: " .. name .. " ID: " .. e.id
+        has_name = true
+      end
+    end
+    if not has_name then
+      entity_names[#entity_names+1] = "  num: " .. i .. " type:" .. e.type .. "    ID: " .. e.id
+    end
+  end
+  return entity_names
+end
+
 function editor_funcs.window.editor(EM, SM)
   imgui.Begin("Entity list")
   list_multi_select = imgui.Checkbox("multi select", list_multi_select)
-
-  imgui.Separator()
-  imgui.Text("Total: " .. #EM.storage .. "  Selected: " .. num)
-  imgui.Separator()
-
-  entity_names = {}
-  for i = 1, #EM.storage do local e = EM.storage[i]
-    entity_names[#entity_names+1] = "  num: " .. i .. " type:" .. e.type .. "    ID: " .. e.id
+  imgui.SameLine()
+  if imgui.Button("new empty") then
+    EM:create_entity({ type =  5 })
   end
+
+  -- if EM.storage[num] == nil then return end
+  imgui.Separator()
+  imgui.Text("Total: " .. #EM.storage)
+  imgui.SameLine()
+  imgui.Text("Selected ID: " .. num)
+  -- info.entity_names[EM.storage[num].id] =
+  -- imgui.InputText("Name", info.entity_names[EM.storage[num].id], 128)
+  imgui.Separator()
+
+  entity_names = get_entity_names(EM)
+  -- for i = 1, #EM.storage do local e = EM.storage[i]
+  --   local has_name = false
+  --   for key, name in pairs(info.entity_names) do
+  --     if key  == e.id then
+  --       entity_names[#entity_names+1] = "  name: " .. name .. " ID: " .. e.id
+  --       has_name = true
+  --     end
+  --   end
+  --   if not has_name then
+  --     entity_names[#entity_names+1] = "  num: " .. i .. " type:" .. e.type .. "    ID: " .. e.id
+  --   end
+  -- end
 
 --   function()
 --     if list_multi_select then
@@ -174,7 +238,7 @@ function editor_funcs.window.editor(EM, SM)
     -- if(imgui.Selectable("id " .. i .. " type:" .. e.type, num == i)) then
     -- end
 
-    if (imgui.BeginPopupContextItem()) then
+    if imgui.BeginPopupContextItem() then
       entity_right_click(e, EM)
       imgui.EndPopup()
     end
@@ -185,15 +249,32 @@ function editor_funcs.window.editor(EM, SM)
     imgui.EndPopup()
   end
 
-  imgui.Separator()
-  if imgui.TreeNode("entiy types 1") then
-    imgui.TreePop()
-  end
-  if imgui.TreeNode("entiy types 2") then
-    imgui.TreePop()
-  end
+  -- imgui.Separator()
+  -- if imgui.TreeNode("entiy types 1") then
+  --   imgui.TreePop()
+  -- end
+  -- if imgui.TreeNode("entiy types 2") then
+  --   imgui.TreePop()
+  -- end
 
-  imgui.Separator()
+  -- asociar id de entidad a string
+  --   string nombre
+  --   id o key con mombre d grupo tree para agrupar
+
+
+  -- if nodes == true, is leaf
+  -- for i = 1, #nodes do
+  --   local node_open =  imgui.TreeNode("nodo " .. i, i)
+  --   if nodes[i] then
+  --     if imgui.IsItemClicked() then
+  --       node_clicked = i
+  --     end
+  --     if node_open then
+  --       imgui.Bullet("no")
+  --       imgui.TreePop()
+  --     end
+  --   end
+  -- end
 
 
   -- static int selection_mask = (1 << 2); // Dumb representation of what may be user-side selection state. You may carry selection state inside or outside your objects in whatever format you see fit.
@@ -244,6 +325,7 @@ function editor_funcs.window.editor(EM, SM)
   imgui.End()
 end
 
+local entity_editor = require("engine.editor.entity_editor")
 function editor_funcs.window.entity_editor(EM, SM, bools)
   entity_editor(EM, SM, imgui, num)
 end
@@ -273,30 +355,17 @@ function editor_funcs.window.dump(EM, SM, bools)
   end
   imgui.End()
 
-  imgui.Begin("Storage dump")
-  imgui.Separator()
-  for i = 1, #EM.storage do
-    imgui.Text(i .. ": " ..  table.dump(EM.storage[i]))
+  if show_storage_dump then
+    show_storage_dump = imgui.Begin("Storage dump", show_storage_dump)
     imgui.Separator()
+    for i = 1, #EM.storage do
+      imgui.Text(i .. ": " ..  table.dump(EM.storage[i]))
+      imgui.Separator()
+    end
+    imgui.End()
   end
-  imgui.End()
 end
 
-local scene_factor = 0.65 -- TODO improve
-function editor_funcs.scene_window(canvas)
-  imgui.Begin("Scene", false , "HorizontalScrollbar")
-  scene_factor = imgui.SliderFloat("Zoom", scene_factor, 0, 10)
-  imgui.SameLine()
-  if imgui.Button("Reset Zoom") then scene_factor = 0.65 end
-  imgui.BeginChild("game_scene")
-  imgui.Image(canvas, 1280 * scene_factor, 720 * scene_factor)
-  imgui.EndChild()
-
-  imgui.End()
-end
-
--- TODO improve
-local RM = require("game.man.resource_man")
 
 local rm_canvas = love.graphics.newCanvas(100, 100)
 local rm_size = 40
@@ -337,9 +406,10 @@ end
 
 local templates = require("engine.templates")
 function editor_funcs.window.create(EM, SM, bools)
-
   imgui.Begin("Tools")
+
   bools.render_collider = imgui.Checkbox("render_collider", bools.render_collider)
+  bools.render_patrol = imgui.Checkbox("render_patrol", bools.render_patrol)
   if imgui.Button("new from t") then
     EM:create_entity(table.deepcopy(templates.basic))
   end
@@ -348,6 +418,7 @@ function editor_funcs.window.create(EM, SM, bools)
       type =  5
     })
   end
+  log(templates, "templates")
 
   if imgui.Button("add 100") then
     for _ = 1, 100 do
@@ -362,6 +433,5 @@ function editor_funcs.window.create(EM, SM, bools)
   end
   imgui.End()
 end
-
 
 return editor_funcs
