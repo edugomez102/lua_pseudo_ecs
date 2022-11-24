@@ -22,7 +22,7 @@ mkdir ../../../../shipping/
 mkdir ../../../../shipping/game_switch
 
 # --- Building the game ---
-lovebrew build
+~/.config/lovebrew/lovebrew build
 
 # --- Moving the compiled game to the directory ---
 mv build/SuperGame.nro ../../../../shipping/game_switch/
