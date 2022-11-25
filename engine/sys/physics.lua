@@ -34,15 +34,12 @@ end
 ---
 --- Updates system
 ---
----@param storage table
-function sys_physics.update(storage)
-  for _, entity in pairs(storage) do
-    if table.has_key(entity.cmps, "transform") and
-       table.has_key(entity.cmps, "physics"  ) then
-
-       update_one(entity)
-     end
-  end
+---@param EM table
+function sys_physics.update(EM)
+  EM:forall({"transform", "physics"},
+  function(entity)
+    update_one(entity)
+  end)
 
 end
 

@@ -83,28 +83,20 @@ end
 ---
 --- Updates system
 ---
----@param storage table entity storage
-function sys_collision.update(storage)
+---@param EM table entity storage
+function sys_collision.update(EM)
 
-  local player = table.get_subtable(storage, "type", E_TYPES.player)
   -- TODO move or improve
+  local player = table.get_subtable(EM.storage, "type", E_TYPES.player)
 
-  for _, entity in pairs(storage) do
-    if table.has_key(entity.cmps, "transform") and
-       table.has_key(entity.cmps, "collision") then
+  EM:forall({"transform", "collision"},
+  function(entity)
+    update_one(entity)
+    if entity.type ~= E_TYPES.player and player then
+      check_player_collision(player, entity)
+    end
+  end)
 
-       update_one(entity)
-     end
-  end
-
-  for _, entity in pairs(storage) do
-    if table.has_key(entity.cmps, "transform") and
-       table.has_key(entity.cmps, "collision") and
-       entity.type ~= E_TYPES.player and player then
-
-       check_player_collision(player, entity)
-     end
-  end
 end
 
 return sys_collision

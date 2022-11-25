@@ -56,15 +56,12 @@ end
 ---
 --- Updates system
 ---
----@param storage table
-function sys_input.update(storage)
-  for _, entity in pairs(storage) do
-    if table.has_key(entity.cmps, "transform") and
-       table.has_key(entity.cmps, "input"  ) then
-
-       update_one(entity)
-     end
-  end
+---@param EM table
+function sys_input.update(EM)
+  EM:forall({"transform", "input"},
+  function(entity)
+    update_one(entity)
+  end)
 end
 
 return sys_input

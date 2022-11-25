@@ -45,10 +45,10 @@ function SM:init(Game, Editor)
 end
 
 ---
----@param storage any
-function SM:update(storage)
+---@param EM table
+function SM:update(EM)
   for i = 1, #sys_index do
-    self.systems[sys_index[i]].update(storage)
+    self.systems[sys_index[i]].update(EM)
   end
 end
 

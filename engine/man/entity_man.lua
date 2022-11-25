@@ -54,6 +54,19 @@ function EM:init_from_list(p_entity_list)
 end
 
 ---
+--- Updates storage for matching cmps
+---
+---@param cmp_strs table array of strings with cmp names
+---@param update_fun function
+function EM:forall(cmp_strs, update_fun)
+  for i = 1, #self.storage do local entity = self.storage[i]
+    if table.has_keys(entity.cmps, cmp_strs) then
+      update_fun(entity)
+    end
+  end
+end
+
+---
 --- Checks for dead entities and removes them from storage
 --- Sets value of dead entity to nil and then shifts the storage array
 ---

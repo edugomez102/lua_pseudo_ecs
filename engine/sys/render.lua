@@ -72,32 +72,28 @@ end
 ---
 --- Updates system
 ---
----@param storage table
-function sys_render.update(storage)
+---@param EM table
+function sys_render.update(EM)
   function love.draw()
     love.graphics.setCanvas(canvas)
     love.graphics.clear(0, 0.1, 0, 1)
 
-    for _, entity in pairs(storage) do
-      if table.has_key(entity.cmps, "transform") and
-         table.has_key(entity.cmps, "render"  ) then
-
-        update_one(entity)
-        if table.has_key(entity.cmps, "collision") and
-           Editor.bools.render_collider
-          then
-          draw_entity_collider(entity)
-        end
-        if table.has_key(entity.cmps, "ai") and
-           Editor.bools.render_patrol
-          then
-          draw_patrol_points(entity)
-        end
-       end
-    end
+    EM:forall({"transform", "render"},
+    function(entity)
+      update_one(entity)
+      if table.has_key(entity.cmps, "collision") and
+         Editor.bools.render_collider
+        then
+        draw_entity_collider(entity)
+      end
+      if table.has_key(entity.cmps, "ai") and
+         Editor.bools.render_patrol
+        then
+        draw_patrol_points(entity)
+      end
+    end)
 
     love.graphics.setCanvas()
-
     love.graphics.reset()
 
     -- love.graphics.draw(canvas, 0, 0)

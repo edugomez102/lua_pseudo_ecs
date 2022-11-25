@@ -31,7 +31,7 @@ end
 ---@param dt number delta time
 function love.update(dt)
   EM:update()
-  SM:update(EM.storage)
+  SM:update(EM)
 
   Editor.imgui.NewFrame()
 end
