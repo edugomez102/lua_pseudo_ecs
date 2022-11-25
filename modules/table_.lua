@@ -1,4 +1,4 @@
----
+
 ---Extended table namespace
 ---
 
@@ -6,12 +6,20 @@
 ---@param t table to ce
 ---@param element any to check
 function table.has_key(t, element)
-  for k in pairs(t) do
-    if k == element then
-      return true
-    end
+  if t[element] then return true
+  else return false
   end
-  return false
+end
+
+---Checks if table contains given keys
+---@param t table
+---@param args table containing string keys to check
+function table.has_keys(t, args)
+  for i = 1, #args do
+    local has_key = table.has_key(t, args[i])
+    if not has_key then return false end
+  end
+  return true
 end
 
 ---Checks if table contains given value
@@ -139,9 +147,10 @@ end
 --- Pretty dump of table
 ---
 ---@param t table table to dump
----@param level string indetation level
+---@param ... string indetation level
 ---@return string
-function table.dump(t, level)
+function table.dump(t, ...)
+  local level = ...
   if level == nil then level = "  " end
   if type(t) == 'table' then
     local s = '{\n'
