@@ -2,8 +2,7 @@
 -- Main file of lua pseudo ecs.
 -- Inits EM, SM and game.
 -- Updates EM and SM.
-require("modules.table_")
-require("modules.string_")
+require("modules.ext")
 require("engine.log")
 
 local Game   = require("game.game")
