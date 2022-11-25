@@ -1,3 +1,5 @@
+local entity_right_click = require("engine.editor.entity.right_click")
+
 local scene_win_flags = {
   "ImGuiWindowFlags_NoBringToFrontOnFocus"
 }
@@ -26,7 +28,7 @@ local function entity_marker(p_e)
 end
 
 -- TOOD drag work with zoom
-local function scene_overlay(Editor, storage)
+local function scene_overlay(Editor, EM)
   local imgui = Editor.imgui
 
   -- TODO fit imgui.Image
@@ -38,7 +40,7 @@ local function scene_overlay(Editor, storage)
 
   imgui.Begin("over scene", false, scene_win_overlay_flags)
   local m_x, m_y = imgui.GetMousePos()
-  for i = 1, #storage do local e = storage[i]
+  for i = 1, #EM.storage do local e = EM.storage[i]
     if table.has_key(e.cmps, "transform") and
        table.has_key(e.cmps, "render"  ) then
       local cmp_tra = e.cmps.transform
@@ -61,6 +63,10 @@ local function scene_overlay(Editor, storage)
         -- TODO fixed margin
         cmp_tra.pos.x = (m_x - 20) / scene_zoom
         cmp_tra.pos.y = (m_y - 80) / scene_zoom
+      end
+      if imgui.BeginPopupContextItem() then
+        entity_right_click(imgui, e, EM, Editor.info)
+        imgui.EndPopup()
       end
       if imgui.IsItemHovered() or imgui.IsItemActive() then
         imgui.BeginTooltip()

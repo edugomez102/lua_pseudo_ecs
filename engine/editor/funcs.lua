@@ -1,4 +1,4 @@
-------------
+------------funcs
 -- Editor funcs
 --
 local editor_funcs = {
@@ -14,8 +14,6 @@ function editor_funcs.init(p_imgui, p_info)
 end
 
 local RM  = require("game.man.resource_man")
-local CMP = require("engine.cmp.cmp_all")
-local utils = require("engine.editor.utils")
 
 -------------------------------------------------
 -- Style
@@ -52,94 +50,15 @@ editor_funcs.scene_window = require("engine.editor.containers.scene_win")
 editor_funcs.log_window = require("engine.editor.containers.log_win")
 
 -------------------------------------------------
+-- Entity edit
+-------------------------------------------------
+local entity_right_click = require("engine.editor.entity.right_click")
+local entity_preview_selec = require("engine.editor.entity.preview")
+
+-------------------------------------------------
 -- Windows common
 -------------------------------------------------
 
--- local render_fun = require("engine.sys.render").update_one
-local function entity_preview_selec(p_e)
-  imgui.Text("type: " .. p_e.type)
-  imgui.Spacing()
-  for key, _ in pairs(p_e.cmps) do
-    imgui.Text(key)
-  end
-  if table.has_key(p_e.cmps, "render") then
-    local cmp_ren = p_e.cmps.render
-    local pv_canvas = love.graphics.newCanvas(50, 50)
-    love.graphics.setCanvas(pv_canvas)
-      -- render_fun(p_e)
-        love.graphics.setColor(cmp_ren.color)
-        love.graphics.rectangle("fill", 0, 0, cmp_ren.w, cmp_ren.h)
-        if cmp_ren.sprite then
-          love.graphics.draw(RM.sprites[cmp_ren.sprite], 0, 0)
-        end
-        love.graphics.reset()
-    love.graphics.setCanvas()
-    imgui.Image(pv_canvas, 80, 80)
-  end
-end
-
----@param p_e table entity
----@param choose_from table with keys to choose from
----@param fun function
-local function cmp_submenu(p_e, choose_from, fun)
-  for key, _ in pairs(choose_from) do
-    if imgui.MenuItem(key) then
-      fun(p_e, key)
-    end
-  end
-end
-
-local temp_str  = ""
-local function entity_right_click(p_e, EM)
-  entity_preview_selec(p_e)
-
-  imgui.Separator()
-  -- if imgui.MenuItem("New empty entity") then
-  --   EM:create_entity({ type =  5 })
-  -- end
-  -- imgui.Text("entity id: " .. p_e.id)
-
-  if imgui.MenuItem("Copy entity") then
-    EM.copy_entity(table.deepcopy(p_e))
-  end
-  imgui.Separator()
-  if imgui.BeginMenu("CMP add") then
-    cmp_submenu(p_e, CMP , EM.add_cmp)
-    imgui.EndMenu()
-  end
-  if imgui.BeginMenu("CMP delete") then
-    cmp_submenu(p_e, p_e.cmps, EM.delete_cmp)
-    imgui.EndMenu()
-  end
-  imgui.Separator()
-  imgui.PushStyleColor("ImGuiCol_Text", 0.7, 0.3, 0.3, 1)
-  if imgui.MenuItem("Delete entity") then
-    p_e.type = E_TYPES.dead
-  end
-  imgui.PopStyleColor()
-  if imgui.BeginMenu("Make template") then
-    local templates = require("engine.templates")
-    temp_str = imgui.InputText("key", temp_str, 128)
-    imgui.SameLine()
-    if imgui.Button("Make templte ##btn") then
-      templates[temp_str] = p_e
-      table.write_to_file(templates, "engine/templates.lua")
-      temp_str = ""
-    end
-    imgui.EndMenu()
-  end
-  -- TODO aaaaaaaaa
-  if imgui.BeginMenu("Change name") then
-    utils.help_marker(imgui, "Selection widget resets on change so there is no name preview");
-    temp_str =
-    imgui.InputText("name", temp_str , 128)
-    if imgui.Button("Confirm") then
-      info.entity_names[p_e.id] = temp_str
-      temp_str = ""
-    end
-    imgui.EndMenu()
-  end
-end
 
 
 -------------------------------------------------
@@ -237,14 +156,14 @@ function editor_funcs.window.editor(EM, SM, bools)
     ---
     if (imgui.IsItemHovered()) then
       imgui.BeginTooltip()
-      entity_preview_selec(EM.storage[i])
+      entity_preview_selec(imgui, EM.storage[i], RM)
       imgui.EndTooltip()
     end
     -- if(imgui.Selectable("id " .. i .. " type:" .. e.type, num == i)) then
     -- end
 
     if imgui.BeginPopupContextItem() then
-      entity_right_click(e, EM)
+      entity_right_click(imgui, e, EM, info, RM)
       imgui.EndPopup()
     end
   end

@@ -43,7 +43,7 @@ end
 ---@param canvas love.Canvas
 local function update_windows(canvas, bools)
   Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.2, 0.2, 0.2, 1.0)
-  editor_funcs.scene_window(Editor, canvas, editor_EM.storage)
+  editor_funcs.scene_window(Editor, canvas, editor_EM)
   for _, fun in pairs(editor_funcs.window) do
     fun(editor_EM, editor_SM, bools)
   end
