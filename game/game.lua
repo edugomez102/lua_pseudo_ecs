@@ -8,7 +8,10 @@ require("game.entity_types")
 -- TODO check OS
 local function load_scenes()
   local scene_table = {}
-  local handle = io.popen("ls game/resources/scenes")
+  local handle = os.do_for_os(
+    function() return io.popen("dir game/resources/scenes /b /a-d") end,
+    function() return io.popen("ls game/resources/scenes") end
+  )
   if handle then
     local result = handle:read("a")
     for line in string.lines(result) do
