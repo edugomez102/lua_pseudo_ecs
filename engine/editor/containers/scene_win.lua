@@ -31,6 +31,7 @@ local function scene_overlay(Editor, storage)
 
   -- TODO fit imgui.Image
   imgui.PushStyleColor("ImGuiCol_WindowBg", 0.8, 0.2, 0.2, 0.4)
+
   imgui.PushStyleColor("ImGuiCol_ButtonHovered", 0.8, 0.9, 0.3, 0.4)
   imgui.PushStyleColor("ImGuiCol_ButtonActive", 0.8, 0.9, 0.3, 0.8)
   imgui.PushStyleVar("ImGuiStyleVar_FrameBorderSize", 1.5)
@@ -63,9 +64,12 @@ local function scene_overlay(Editor, storage)
       end
       if imgui.IsItemHovered() or imgui.IsItemActive() then
         imgui.BeginTooltip()
-        imgui.Text(e.id)
+        imgui.Text("ID: " .. e.id)
         local e_name = Editor.info.entity_names[e.id]
-        if e_name then imgui.Text(Editor.info.entity_names[e.id]) end
+        if e_name then
+          imgui.SameLine()
+          imgui.Text(Editor.info.entity_names[e.id])
+        end
         imgui.Text(cmp_tra.pos.x .. ", " .. cmp_tra.pos.y)
         imgui.EndTooltip()
       end
@@ -90,16 +94,21 @@ return function (Editor, canvas, storage)
   if imgui.Button("Reset Zoom") then scene_zoom = 0.65 end
   log(scn_win, "scn_win")
 
-  Editor.imgui.PushStyleColor("ImGuiCol_WindowBg", 0.2, 0.7, 0.2, 0.4)
   imgui.BeginChild("game_scene", 0, 0, false, {
     "ImGuiWindowFlags_HorizontalScrollbar",
   })
   scn_win.size.x, scn_win.size.y = imgui.GetContentRegionAvail()
+  if scn_win.size.x > 1920 * scene_zoom then
+    scn_win.size.x = 1920 * scene_zoom
+  end
+  if scn_win.size.y > 1080 * scene_zoom then
+    scn_win.size.y = 1080 * scene_zoom
+  end
+  -- scn_win.size.x, scn_win.size.y = 1920 * scene_zoom, 1080 * scene_zoom
   -- scn_win.pos.x, scn_win.pos.y   = imgui.GetCursorPos()
   scn_win.pos.x, scn_win.pos.y   = imgui.GetWindowPos()
   imgui.Image(canvas, 1920 * scene_zoom, 1080 * scene_zoom)
   imgui.EndChild()
-  Editor.imgui.PopStyleColor()
 
   imgui.SetNextWindowPos(scn_win.pos.x, scn_win.pos.y)
   imgui.SetNextWindowSize(scn_win.size.x, scn_win.size.y)

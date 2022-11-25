@@ -1,3 +1,5 @@
+local utils = require("engine.editor.utils")
+
 local function scene_submenu(Editor, Game, EM)
   local imgui = Editor.imgui
   for key, value in pairs(Game.scenes) do
@@ -81,6 +83,8 @@ return function (Editor, EM, SM, Game)
       imgui.Text("no scene")
     end
     imgui.PopStyleColor()
+
+    utils.help_marker(imgui, "Reduce Scene zoom if cannot move windows")
 
     imgui.EndMainMenuBar()
   end
