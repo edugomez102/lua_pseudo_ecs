@@ -366,11 +366,21 @@ function editor_funcs.window.create(EM, SM, bools)
   imgui.Columns(3, "test cols")
   for e_t, value in pairs(templates) do
     imgui.Separator()
+    imgui.BeginGroup()
+
     imgui.Text(e_t)
+    imgui.Spacing()
+    imgui.Spacing()
 
     if imgui.Button("Create##" .. e_t) then
       EM:create_entity(table.deepcopy(value))
     end
+
+    if imgui.MenuItem("Delete template") then
+      table.remove_key(templates, e_t)
+    end
+
+    imgui.EndGroup()
     imgui.NextColumn()
 
     if table.has_key(value.cmps, "render") then
