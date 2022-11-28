@@ -28,4 +28,13 @@ function utils.layout(imgui)
   end
 end
 
+function utils.flex_group(imgui, item_margin)
+  local window_visible_x2 = imgui.GetWindowPos() + imgui.GetWindowContentRegionMax()
+  local last_button_x2    = imgui.GetItemRectMax()
+  local next_button_x2    = last_button_x2 + item_margin
+  if next_button_x2 < window_visible_x2 then
+    imgui.SameLine()
+  end
+end
+
 return utils

@@ -1,3 +1,4 @@
+local utils = require "engine.editor.utils"
 ------------funcs
 -- Editor funcs
 --
@@ -95,7 +96,7 @@ function editor_funcs.window.editor(EM, SM, bools)
   list_multi_select = imgui.Checkbox("multi select", list_multi_select)
   imgui.SameLine()
   if imgui.Button("new empty") then
-    EM:create_entity({ type =  5 })
+    EM:create_entity({ type =  5, cmps = { transform = {} } })
   end
 
   -- if EM.storage[num] == nil then return end
@@ -293,38 +294,47 @@ function editor_funcs.window.storage_dump(EM, SM, bools)
   end
 end
 
-local rm_canvas = love.graphics.newCanvas(100, 100)
-local rm_size = 40
--- local path_str = ""
--- local sprite_key = ""
+local rm_size = 50
+local item_margin = 150
 function editor_funcs.window.rm()
   imgui.Begin("Resource Manager")
-  -- rm_size = imgui.SliderInt("rm_size", rm_size, 5, 50)
-  -- path_str = imgui.InputText("path", path_str, 128)
-  -- sprite_key = imgui.InputText("key", sprite_key, 128)
-  -- if(imgui.Button("Load Sprite")) then
-  --   RM.sprites[sprite_key] = love.graphics.newImage(path_str)
-  -- end
+  if imgui.Button("Open folder") then
+    os.do_for_os(
+    function() os.execute("xdg-open game/assets/img") end,
+    function() os.execute("explorer.exe game/assets/img") end)
+  end
+  imgui.SameLine()
+  if imgui.Button("Reload") then
+    RM:reload_resources()
+  end
+  imgui.Separator()
+
   for key, value in pairs(RM.sprites) do
-    rm_canvas = love.graphics.newCanvas(100, 100)
+    local img_x, img_y = value:getWidth(), value:getHeight()
+    local rm_canvas = love.graphics.newCanvas(img_x, img_y)
     love.graphics.setCanvas(rm_canvas)
       -- love.graphics.clear(0, 0, 0) TODO ???
       love.graphics.draw(value)
     love.graphics.setCanvas()
 
     imgui.BeginGroup()
-    imgui.Bullet()
     imgui.Image(rm_canvas, rm_size , rm_size)
     imgui.SameLine()
-    imgui.Text(key)
+    imgui.BeginGroup()
+      imgui.Text(key)
+      imgui.SameLine(item_margin)
+      imgui.Spacing(); imgui.Spacing()
+      imgui.Text(img_x .. "x" .. img_y)
+      imgui.EndGroup()
     imgui.EndGroup()
+    utils.flex_group(imgui, item_margin)
+
     if (imgui.IsItemHovered()) then
       imgui.BeginTooltip()
-      imgui.Image(rm_canvas, 300, 300)
+      imgui.Image(rm_canvas, img_x, img_y)
       imgui.EndTooltip()
     end
   end
-
   imgui.End()
 end
 
@@ -354,6 +364,16 @@ function editor_funcs.window.create(EM, SM, bools)
       }
     end
   end
+  if imgui.Button("add 1 random") then
+    local e = EM:create_entity(table.deepcopy(templates.to_random))
+    math.randomseed(os.clock() * 100000000000)
+    -- TODO improve
+    e.cmps.transform.pos = {
+      x = math.random(0, 1920),
+      y = math.random(0, 1080)
+      }
+  end
+
   imgui.End()
 end
 
