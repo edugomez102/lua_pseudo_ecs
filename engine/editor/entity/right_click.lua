@@ -42,12 +42,12 @@ return function (imgui, p_e, EM, info, RM)
   end
   imgui.PopStyleColor()
   if imgui.BeginMenu("Make template") then
-    local templates = require("engine.templates")
+    local templates = require("game.resources.templates")
     temp_str = imgui.InputText("key", temp_str, 128)
     imgui.SameLine()
     if imgui.Button("Make templte ##btn") then
       templates[temp_str] = p_e
-      table.write_to_file(templates, "engine/templates.lua")
+      table.write_to_file(templates, "game/resources/templates.lua")
       temp_str = ""
     end
     imgui.EndMenu()

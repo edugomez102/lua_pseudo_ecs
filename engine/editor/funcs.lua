@@ -340,7 +340,7 @@ end
 
 -- TODO better entity creation
 
-local templates = require("engine.templates")
+local templates = require("game.resources.templates")
 function editor_funcs.window.create(EM, SM, bools)
   imgui.Begin("Tools")
 
@@ -349,30 +349,51 @@ function editor_funcs.window.create(EM, SM, bools)
   if imgui.Button("new player") then
     EM:create_entity(table.deepcopy(templates.player_01))
   end
-  if imgui.Button("new patrol") then
-    EM:create_entity(table.deepcopy(templates.basic))
-  end
-  -- log(templates, "templates")
-  if imgui.Button("add 100 random") then
-    for _ = 1, 100 do
-      local e = EM:create_entity(table.deepcopy(templates.to_random))
-      math.randomseed(os.clock() * 100000000000)
-      -- TODO improve
-      e.cmps.transform.pos = {
-        x = math.random(0, 1920),
-        y = math.random(0, 1080)
-      }
+
+  -- -- log(templates, "templates")
+  -- if imgui.Button("add 100 random") then
+  --   for _ = 1, 100 do
+  --     local e = EM:create_entity(table.deepcopy(templates.to_random))
+  --     math.randomseed(os.clock() * 100000000000)
+  --     -- TODO improve
+  --     e.cmps.transform.pos = {
+  --       x = math.random(0, 1920),
+  --       y = math.random(0, 1080)
+  --     }
+  --   end
+  -- end
+
+  imgui.Columns(3, "test cols")
+  for e_t, value in pairs(templates) do
+    imgui.Separator()
+    imgui.Text(e_t)
+
+    if imgui.Button("Create##" .. e_t) then
+      EM:create_entity(table.deepcopy(value))
     end
+    imgui.NextColumn()
+
+    if table.has_key(value.cmps, "render") then
+      local cmp_ren   = value.cmps.render
+      local pv_canvas = love.graphics.newCanvas(50, 50)
+      love.graphics.setCanvas(pv_canvas)
+        love.graphics.setColor(cmp_ren.color)
+        love.graphics.rectangle("fill", 0, 0, cmp_ren.w, cmp_ren.h)
+        if cmp_ren.sprite then
+          love.graphics.draw(RM.sprites[cmp_ren.sprite], 0, 0)
+        end
+      love.graphics.setCanvas()
+      love.graphics.reset()
+      imgui.Image(pv_canvas, 80, 80)
+    end
+    imgui.NextColumn()
+
+    for c in pairs(value.cmps) do
+      imgui.Text(c)
+    end
+    imgui.NextColumn()
   end
-  if imgui.Button("add 1 random") then
-    local e = EM:create_entity(table.deepcopy(templates.to_random))
-    math.randomseed(os.clock() * 100000000000)
-    -- TODO improve
-    e.cmps.transform.pos = {
-      x = math.random(0, 1920),
-      y = math.random(0, 1080)
-      }
-  end
+  imgui.Columns(1)
 
   imgui.End()
 end
