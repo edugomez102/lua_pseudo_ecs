@@ -142,7 +142,15 @@ return function(EM, SM, imgui, num)
   if entity == nil then return end
   for key, fun in pairs(edit_cmp) do
     if table.has_key(entity.cmps, key) then -- TOOD same cmp order
-      if (imgui.BeginTabItem(key)) then
+      if imgui.BeginTabItem(key) then
+        -- TODO improve :(
+        do
+          if imgui.Button("delete this component") then
+            EM.delete_cmp(entity, key) return
+          end
+          imgui.Separator()
+        end
+
         fun(entity.cmps[key], imgui)
         imgui.EndTabItem()
       end
