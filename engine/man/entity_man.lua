@@ -21,6 +21,7 @@ local EM = {
 ---@param raw_cmps table raw cmps list 
 ---@raise when cmps doesnt exist
 local function generate_cmps(raw_cmps)
+  if raw_cmps == nil then return end
   for key, value in pairs(raw_cmps) do
     if CMP[key] then
       raw_cmps[key] = CMP[key](value)
@@ -49,6 +50,19 @@ end
 function EM:init_from_list(p_entity_list)
   for i = 1, #p_entity_list do
     self:create_entity(p_entity_list[i])
+  end
+end
+
+---
+--- Updates storage for matching cmps
+---
+---@param cmp_strs table array of strings with cmp names
+---@param update_fun function
+function EM:forall(cmp_strs, update_fun)
+  for i = 1, #self.storage do local entity = self.storage[i]
+    if table.has_keys(entity.cmps, cmp_strs) then
+      update_fun(entity)
+    end
   end
 end
 
@@ -100,7 +114,9 @@ end
 ---@param cmp_str string component name
 function EM.add_cmp(p_e, cmp_str)
   if CMP[cmp_str] then
-    p_e.cmps[cmp_str] = CMP[cmp_str]({})
+    if not table.has_key(p_e.cmps, cmp_str) then
+      p_e.cmps[cmp_str] = CMP[cmp_str]({})
+    end
   else
     error("no cmp " .. cmp_str, 2)
   end
@@ -115,7 +131,13 @@ function EM.copy_entity(p_e_to_copy)
   return EM:create_entity(p_e_to_copy)
 end
 
-function EM.delete_all()
+-- TODO improve
+function EM:delete_all()
+  self.storage = {}
+  -- for i = 1, #EM.storage do local entity = EM.storage[i]
+  --   entity.type = E_TYPES.dead
+  -- end
+  e.reset_last_id()
 end
 
 return EM

@@ -27,15 +27,12 @@ end
 ---
 --- Updates system
 ---
----@param storage table
-function sys_ai.update(storage)
-  for i = 1, #storage do local entity = storage[i]
-    if table.has_key(entity.cmps, "transform") and
-       table.has_key(entity.cmps, "ai"  ) then
-
-       update_one(entity)
-     end
-  end
+---@param EM table
+function sys_ai.update(EM)
+  EM:forall({"transform", "ai"},
+  function(entity)
+    update_one(entity)
+  end)
 end
 
 return sys_ai
