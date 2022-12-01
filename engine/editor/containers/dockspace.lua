@@ -23,7 +23,7 @@ local topbar_margin = 16
 ---
 return function (imgui)
   imgui.SetNextWindowPos(0, topbar_margin)
-  imgui.SetNextWindowSize(1920, 1080 - topbar_margin)
+  imgui.SetNextWindowSize(S_W, S_H - topbar_margin)
   imgui.Begin("DockSpace " .. dockspace_id , true, dockwindow_flaggs)
   imgui.DockSpace(dockspace_id, 0, 0, dockspace_flags)
   imgui.End()

@@ -104,16 +104,16 @@ return function (Editor, canvas, storage)
     "ImGuiWindowFlags_HorizontalScrollbar",
   })
   scn_win.size.x, scn_win.size.y = imgui.GetContentRegionAvail()
-  if scn_win.size.x > 1920 * scene_zoom then
-    scn_win.size.x = 1920 * scene_zoom
+  if scn_win.size.x > S_W * scene_zoom then
+    scn_win.size.x = S_W * scene_zoom
   end
-  if scn_win.size.y > 1080 * scene_zoom then
-    scn_win.size.y = 1080 * scene_zoom
+  if scn_win.size.y > S_H * scene_zoom then
+    scn_win.size.y = S_H * scene_zoom
   end
-  -- scn_win.size.x, scn_win.size.y = 1920 * scene_zoom, 1080 * scene_zoom
+  -- scn_win.size.x, scn_win.size.y = S_W * scene_zoom, S_H * scene_zoom
   -- scn_win.pos.x, scn_win.pos.y   = imgui.GetCursorPos()
   scn_win.pos.x, scn_win.pos.y   = imgui.GetWindowPos()
-  imgui.Image(canvas, 1920 * scene_zoom, 1080 * scene_zoom)
+  imgui.Image(canvas, S_W * scene_zoom, S_H * scene_zoom)
   imgui.EndChild()
 
   imgui.SetNextWindowPos(scn_win.pos.x, scn_win.pos.y)

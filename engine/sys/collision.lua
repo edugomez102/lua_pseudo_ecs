@@ -9,8 +9,8 @@ local sys_collision = {}
 local m = {
   min_x = 0,      --- integer screen min x
   min_y = 0,      --- integer screen min y
-  max_x = 1920,   --- integer screen max x
-  max_y = 1080     --- integer screen max y
+  max_x = S_W,   --- integer screen max x
+  max_y = S_H     --- integer screen max y
 }
 
 --- Contains entity collision funcs 

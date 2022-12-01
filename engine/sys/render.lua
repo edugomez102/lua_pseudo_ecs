@@ -2,8 +2,8 @@
 -- Render System
 --
 local sys_render = {
-  w_w = 1920,
-  w_h = 1080
+  w_w = S_W,
+  w_h = S_H
 }
 -- TODO make local
 local canvas = nil
@@ -73,7 +73,7 @@ end
 --- Updates system
 ---
 ---@param EM table
-function sys_render.update(EM)
+function sys_render.update(EM, dt)
   function love.draw()
     love.graphics.setCanvas(canvas)
     love.graphics.clear(0, 0.1, 0, 1)
@@ -96,8 +96,11 @@ function sys_render.update(EM)
     love.graphics.setCanvas()
     love.graphics.reset()
 
-    -- love.graphics.draw(canvas, 0, 0)
-    Editor:update(canvas)
+    if OG_DEBUG then
+      Editor:update(canvas)
+    else
+      love.graphics.draw(canvas, 0, 0)
+    end
   end
 end
 

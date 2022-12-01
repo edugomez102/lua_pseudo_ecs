@@ -57,7 +57,7 @@ end
 function edit_cmp.transform(cmp, imgui)
   imgui.Text("cmp.tra")
   cmp.pos.x, cmp.pos.y =
-  imgui.SliderInt2("trs pos", cmp.pos.x, cmp.pos.y, 0, 1080)
+  imgui.SliderInt2("trs pos", cmp.pos.x, cmp.pos.y, 0, S_H)
   cmp.scale.x, cmp.scale.y =
   imgui.SliderInt2("tra scale", cmp.scale.x, cmp.scale.y, 0, 200)
   cmp.rotation.x, cmp.rotation.y =
@@ -110,7 +110,7 @@ function edit_cmp.ai(cmp, imgui)
   imgui.Text("cmp.ai")
   update_cmp_combo(imgui, cmp.behs, "move", "ai_beh")
   cmp.aim.x, cmp.aim.y =
-  imgui.SliderInt2("aim", cmp.aim.x, cmp.aim.y, 0, 1080)
+  imgui.SliderInt2("aim", cmp.aim.x, cmp.aim.y, 0, S_H)
 end
 
 function edit_cmp.collision(cmp, imgui)

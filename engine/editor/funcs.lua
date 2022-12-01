@@ -357,8 +357,8 @@ function editor_funcs.window.create(EM, SM, bools)
   --     math.randomseed(os.clock() * 100000000000)
   --     -- TODO improve
   --     e.cmps.transform.pos = {
-  --       x = math.random(0, 1920),
-  --       y = math.random(0, 1080)
+  --       x = math.random(0, S_W),
+  --       y = math.random(0, S_H)
   --     }
   --   end
   -- end

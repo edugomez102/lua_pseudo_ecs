@@ -46,9 +46,9 @@ end
 
 ---
 ---@param EM table
-function SM:update(EM)
+function SM:update(EM, dt)
   for i = 1, #sys_index do
-    self.systems[sys_index[i]].update(EM)
+    self.systems[sys_index[i]].update(EM, dt)
   end
 end
 
