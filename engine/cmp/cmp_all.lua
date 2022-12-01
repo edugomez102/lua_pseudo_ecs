@@ -9,6 +9,7 @@ local CMP = {
   input     = require("engine.cmp.input"),
   ai        = require("engine.cmp.ai"),
   collision = require("engine.cmp.collision"),
+  animation = require("engine.cmp.animation"),
 }
 
 return CMP

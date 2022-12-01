@@ -12,6 +12,7 @@ local sys_index = {
   "ai",
   "input",
   "collision",
+  "animation",
 }
 
 ---

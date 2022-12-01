@@ -121,6 +121,20 @@ function edit_cmp.collision(cmp, imgui)
 
 end
 
+-- TODO improve
+function edit_cmp.animation(cmp, imgui)
+  imgui.Text("cmp.anim")
+  cmp.vel = imgui.InputFloat("anim vel", cmp.vel, 0.1)
+  cmp.step = imgui.SliderInt("anim step", cmp.step, 0, 200)
+
+  local v, c = imgui.SliderFloat("anim count", cmp.count, 0, 5)
+  if c then cmp.count = v end
+
+  v, c = imgui.InputFloat("anim frame", cmp.frame, cmp.step)
+  if c then cmp.frame = v end
+
+end
+
 local cmp_tab_flags = {
   "ImGuiTabBarFlags_Reorderable",
   "ImGuiTabBarFlags_FittingPolicyScroll",

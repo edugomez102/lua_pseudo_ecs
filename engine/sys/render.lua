@@ -31,7 +31,7 @@ function sys_render.init_editor(p_Editor)
   Editor = p_Editor
 end
 
-local function update_one(p_e)
+local function update_one_static(p_e)
   local cmp_tra = p_e.cmps.transform
   local cmp_ren = p_e.cmps.render
 
@@ -42,6 +42,15 @@ local function update_one(p_e)
   if cmp_ren.sprite then
     love.graphics.draw(Game_RM.sprites[cmp_ren.sprite], cmp_tra.pos.x, cmp_tra.pos.y)
   end
+end
+
+local function update_one_animated(p_e)
+  local cmp_tra = p_e.cmps.transform
+  local cmp_ren = p_e.cmps.render
+  local cmp_ani = p_e.cmps.animation
+  local quad = cmp_ani.quad
+
+  love.graphics.draw(Game_RM.sprites[cmp_ren.sprite], quad, cmp_tra.pos.x, cmp_tra.pos.y)
 end
 
 ---
@@ -80,17 +89,22 @@ function sys_render.update(EM, dt)
 
     EM:forall({"transform", "render"},
     function(entity)
-      update_one(entity)
-      if table.has_key(entity.cmps, "collision") and
-         Editor.bools.render_collider
-        then
-        draw_entity_collider(entity)
+      if table.has_key(entity.cmps, "animation") then
+        update_one_animated(entity)
+      else
+        update_one_static(entity)
       end
-      if table.has_key(entity.cmps, "ai") and
-         Editor.bools.render_patrol
-        then
-        draw_patrol_points(entity)
-      end
+
+      -- if table.has_key(entity.cmps, "collision") and
+      --    Editor.bools.render_collider
+      --   then
+      --   draw_entity_collider(entity)
+      -- end
+      -- if table.has_key(entity.cmps, "ai") and
+      --    Editor.bools.render_patrol
+      --   then
+      --   draw_patrol_points(entity)
+      -- end
     end)
 
     love.graphics.setCanvas()
