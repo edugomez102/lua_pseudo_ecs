@@ -3,6 +3,7 @@
 -- Inits EM, SM and game.
 -- Updates EM and SM.
 require("modules.ext")
+require("lib.load_libs")
 require("engine.log")
 
 local Game   = require("game.game")
@@ -31,7 +32,7 @@ end
 ---@param dt number delta time
 function love.update(dt)
   EM:update()
-  SM:update(EM)
+  SM:update(EM, dt)
 
   Editor.imgui.NewFrame()
 end
