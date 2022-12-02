@@ -95,26 +95,29 @@ function sys_render.update(EM, dt)
         update_one_static(entity)
       end
 
-      -- if table.has_key(entity.cmps, "collision") and
-      --    Editor.bools.render_collider
-      --   then
-      --   draw_entity_collider(entity)
-      -- end
-      -- if table.has_key(entity.cmps, "ai") and
-      --    Editor.bools.render_patrol
-      --   then
-      --   draw_patrol_points(entity)
-      -- end
+if OG_DEBUG then ------------ || DEBUG
+  if table.has_key(entity.cmps, "collision") and
+     Editor.bools.render_collider
+    then
+    draw_entity_collider(entity)
+  end
+  if table.has_key(entity.cmps, "ai") and
+     Editor.bools.render_patrol
+    then
+    draw_patrol_points(entity)
+  end
+end
     end)
 
     love.graphics.setCanvas()
     love.graphics.reset()
 
-    if OG_DEBUG then
-      Editor:update(canvas)
-    else
-      love.graphics.draw(canvas, 0, 0)
-    end
+if OG_DEBUG then ------------ || DEBUG
+  Editor:update(canvas)
+else             ------------ || RELEASE
+  love.graphics.draw(canvas, 0, 0)
+end
+
   end
 end
 
