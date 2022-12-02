@@ -1,5 +1,6 @@
 local edit_cmp = {}
 local RM = require("game.man.resource_man")
+local utils = require("engine.editor.utils")
 
 -------------------------------------------------
 -- Combos of cmp
@@ -83,6 +84,12 @@ function edit_cmp.render(cmp, imgui)
   cmp.color[3])
 
   update_cmp_combo(imgui, cmp, "sprite", "sprite")
+  imgui.Spacing()
+
+  local sprite = RM.sprites[cmp.sprite]
+  utils.imgui_canvas(imgui, sprite, 0.5, function()
+    love.graphics.draw(sprite)
+  end)
 end
 
 function edit_cmp.input(cmp, imgui)
@@ -121,18 +128,41 @@ function edit_cmp.collision(cmp, imgui)
 
 end
 
--- TODO improve
-function edit_cmp.animation(cmp, imgui)
-  imgui.Text("cmp.anim")
-  cmp.vel = imgui.InputFloat("anim vel", cmp.vel, 0.1)
-  cmp.step = imgui.SliderInt("anim step", cmp.step, 0, 200)
+-------------------------------------------------
+-- Multi cmp
+-------------------------------------------------
 
-  local v, c = imgui.SliderFloat("anim count", cmp.count, 0, 5)
-  if c then cmp.count = v end
+local function animation(cmp_ani, cmp_ren, imgui)
+  if imgui.BeginTabItem("animation") then
+    local sprite = RM.sprites[cmp_ren.sprite]
+    local s_w, s_h = sprite:getDimensions()
 
-  v, c = imgui.InputFloat("anim frame", cmp.frame, cmp.step)
-  if c then cmp.frame = v end
+    cmp_ani.vel = imgui.InputFloat("anim vel", cmp_ani.vel, 0.1)
+    cmp_ani.step = imgui.SliderInt("anim step", cmp_ani.step, 0, s_w)
 
+    local v, c = imgui.InputFloat("anim frame", cmp_ani.frame, cmp_ani.step)
+    if c then
+      if v >= s_w then cmp_ani.frame = 0
+      else cmp_ani.frame = v end
+    end
+
+    imgui.Separator(50)
+    imgui.Text("animation counter: " .. cmp_ani.count)
+    imgui.Text("sprite dimensions : " .. s_w .. "x" ..  s_h)
+    imgui.Spacing()
+
+    utils.imgui_canvas(imgui, sprite, 1, function()
+      love.graphics.draw(sprite)
+      love.graphics.setColor(0, 0, 0, 0.6)
+      love.graphics.rectangle("fill", cmp_ani.quad:getViewport())
+      love.graphics.setColor(1, 1, 1)
+      love.graphics.setLineWidth(2)
+      love.graphics.rectangle("line", cmp_ani.quad:getViewport())
+      love.graphics.reset()
+    end)
+
+    imgui.EndTabItem()
+  end
 end
 
 local cmp_tab_flags = {
@@ -169,6 +199,9 @@ return function(EM, SM, imgui, num)
         imgui.EndTabItem()
       end
     end
+  end
+  if table.has_keys(entity.cmps, {"animation", "render"}) then
+    animation(entity.cmps.animation, entity.cmps.render, imgui)
   end
   imgui.EndTabBar()
   imgui.End()

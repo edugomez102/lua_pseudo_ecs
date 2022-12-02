@@ -37,4 +37,15 @@ function utils.flex_group(imgui, item_margin)
   end
 end
 
+function utils.imgui_canvas(imgui, sprite, zoom, draw_fun)
+  local w, h = sprite:getDimensions()
+  local canvas = love.graphics.newCanvas(w, h)
+  love.graphics.setCanvas(canvas)
+    -- love.graphics.draw(sprite)
+    draw_fun()
+  love.graphics.setCanvas()
+  imgui.Image(canvas, w * zoom, h * zoom )
+
+end
+
 return utils
