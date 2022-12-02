@@ -2,6 +2,16 @@ local CMP = require("engine.cmp.cmp_all")
 local utils = require("engine.editor.utils")
 local entity_preview_selec = require("engine.editor.entity.preview")
 
+local function not_added_cmps(p_e)
+  local t = {}
+  for key, _ in pairs(CMP) do
+    if not table.has_key(p_e.cmps, key)  then
+      t[key] = 0 -- value not used in cmp_submenu
+    end
+  end
+  return t
+end
+
 ---@param p_e table entity
 ---@param choose_from table with keys to choose from
 ---@param fun function
@@ -28,7 +38,7 @@ return function (imgui, p_e, EM, info, RM)
   end
   imgui.Separator()
   if imgui.BeginMenu("CMP add") then
-    cmp_submenu(imgui, p_e, CMP , EM.add_cmp)
+    cmp_submenu(imgui, p_e, not_added_cmps(p_e) , EM.add_cmp)
     imgui.EndMenu()
   end
   if imgui.BeginMenu("CMP delete") then
