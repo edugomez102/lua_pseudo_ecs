@@ -21,16 +21,19 @@ local function update_one(p_e, dt)
   local step = cmp_ani.step
   local sprite_w, sprite_h = RM.sprites[cmp_ren.sprite]:getDimensions()
 
-  cmp_ani.count = cmp_ani.count + 1 * dt
-  if cmp_ani.count >= vel * 60 * dt then
-    cmp_ani.count = 0
-    cmp_ani.frame = cmp_ani.frame + step
+  if vel > 0 then
+    cmp_ani.count = cmp_ani.count + 1 * dt
+    if cmp_ani.count >= vel * 60 * dt then
+      cmp_ani.count = 0
+      cmp_ani.frame = cmp_ani.frame + step
 
-    if cmp_ani.frame >= sprite_w then
-      cmp_ani.frame = 0
+      if cmp_ani.frame >= sprite_w then
+        cmp_ani.frame = 0
+      end
     end
   end
 
+  -- TODO improve
   if not cmp_ani.quad then
     cmp_ani.quad =
     love.graphics.newQuad(cmp_ani.frame, 0, step,
