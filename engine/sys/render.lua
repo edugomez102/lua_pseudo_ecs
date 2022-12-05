@@ -3,10 +3,9 @@
 --
 local sys_render = {
   w_w = S_W,
-  w_h = S_H
+  w_h = S_H,
+  canvas = nil
 }
--- TODO make local
-local canvas = nil
 
 ---@table Editor
 local Editor
@@ -22,7 +21,7 @@ local Game_RM
 function sys_render:init(Game)
   Game_RM = Game.man.RM
 
-  canvas = love.graphics.newCanvas(self.w_w, self.w_h)
+  self.canvas = love.graphics.newCanvas(self.w_w, self.w_h)
   -- love.window.setFullscreen(true)
   love.window.setMode(self.w_w, self.w_h)
 end
@@ -53,6 +52,7 @@ local function update_one_animated(p_e)
   love.graphics.draw(Game_RM.sprites[cmp_ren.sprite], quad, cmp_tra.pos.x, cmp_tra.pos.y)
 end
 
+-- TODO move to Editor
 ---
 --- Draws collider of entity
 ---
@@ -78,48 +78,39 @@ local function draw_patrol_points(p_e)
   love.graphics.rectangle("line", cmp_ai.aim.x, cmp_ai.aim.y, 15, 15)
 end
 
+-- TODO move to Editor
 ---
 --- Updates system
 ---
 ---@param EM table
 function sys_render.update(EM, dt)
-  function love.draw()
-    love.graphics.setCanvas(canvas)
-    love.graphics.clear(0, 0.1, 0, 1)
+  love.graphics.setCanvas(sys_render.canvas)
+  love.graphics.clear(0, 0.1, 0, 1)
 
-    EM:forall({"transform", "render"},
-    function(entity)
-      if table.has_key(entity.cmps, "animation") then
-        update_one_animated(entity)
-      else
-        update_one_static(entity)
+  EM:forall({"transform", "render"},
+  function(entity)
+    if table.has_key(entity.cmps, "animation") then
+      update_one_animated(entity)
+    else
+      update_one_static(entity)
+    end
+
+    ------------------------------------------------------- DEBUG
+    if OG_DEBUG then
+      if table.has_key(entity.cmps, "collision") and
+        Editor.bools.render_collider then
+          draw_entity_collider(entity)
+        end
+      if table.has_key(entity.cmps, "ai") and
+        Editor.bools.render_patrol then
+          draw_patrol_points(entity)
       end
+    end
+    -------------------------------------------------------
+  end)
 
-if OG_DEBUG then ------------ || DEBUG
-  if table.has_key(entity.cmps, "collision") and
-     Editor.bools.render_collider
-    then
-    draw_entity_collider(entity)
-  end
-  if table.has_key(entity.cmps, "ai") and
-     Editor.bools.render_patrol
-    then
-    draw_patrol_points(entity)
-  end
-end
-    end)
-
-    love.graphics.setCanvas()
-    love.graphics.reset()
-
-if OG_DEBUG then ------------ || DEBUG
-  Editor:update(canvas)
-else             ------------ || RELEASE
-  love.graphics.draw(canvas, 0, 0)
-end
-
-  end
+  love.graphics.setCanvas()
+  love.graphics.reset()
 end
 
 return sys_render
-

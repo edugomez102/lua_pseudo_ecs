@@ -65,7 +65,9 @@ function Editor:update(canvas)
   update_windows(canvas, Editor.bools)
 
   editor_funcs.style.pop_basic()
+end
 
+function Editor:draw()
   self.imgui.Render()
 end
 

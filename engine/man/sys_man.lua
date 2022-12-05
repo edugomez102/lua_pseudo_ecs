@@ -7,12 +7,12 @@
 ---
 ---@table sys_index
 local sys_index = {
+  "animation",
   "render",
   "physics",
   "ai",
   "input",
   "collision",
-  "animation",
 }
 
 ---

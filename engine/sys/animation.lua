@@ -14,6 +14,7 @@ end
 
 local function update_one(p_e, dt)
   local cmp_ren = p_e.cmps.render
+  if cmp_ren.sprite == nil then return end -- TODO
   local cmp_ani = p_e.cmps.animation
   -- local frame = cmp_ani.frame
   -- local count = cmp_ani.count
