@@ -26,7 +26,8 @@ end
 
 local cmp_comb = {
   sprite  = create_cmp_comb(RM.sprites),
-  fonts   = create_cmp_comb(RM.fonts),
+  -- TODO
+  -- fonts   = create_cmp_comb(RM.fonts),
   col_beh = create_cmp_comb(require("game.beh.col_beh")),
   ai_beh  = create_cmp_comb(require("game.beh.ai_beh")),
 }
