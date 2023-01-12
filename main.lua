@@ -9,7 +9,9 @@ require("engine.log")
 local Game   = require("game.game")
 local EM     = require("engine.man.entity_man")
 local SM     = require("engine.man.sys_man")
+
 local canvas   --- buffer in which game is rendered
+local input    --- input
 
 local Editor
 ------------------------------------------------------- DEBUG
@@ -27,11 +29,13 @@ function love.load()
   else
     SM:init(Game)
     -- TODO default scene
-    Game:load_scene(EM, "player_portal")
+    Game:load_scene(EM, "player_demo")
   end
   -------------------------------------------------------
 
   canvas = SM.systems.render.canvas
+  -- local input_sys = SM.systems.input
+  -- input  = SM.systems.input
 end
 
 ---
@@ -65,6 +69,5 @@ end
 --- Run other love callbacks
 ---
 ------------------------------------------------------- DEBUG
-if OG_DEBUG then require("engine.love_callbacks")(Editor) end
--------------------------------------------------------
+require("engine.love_callbacks")(input, Editor)
 
