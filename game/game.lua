@@ -60,9 +60,13 @@ end
 function Game:init(EM, SM)
 end
 
+---
+--- Deletes all entities and adds entities of scene
+---
 ---@param EM table
 ---@param p_scene string
 function Game:load_scene(EM, p_scene)
+  EM:delete_all()
   EM:init_from_list(table.deepcopy(self.scenes[p_scene].entities))
   self.current_scene = p_scene
 end
