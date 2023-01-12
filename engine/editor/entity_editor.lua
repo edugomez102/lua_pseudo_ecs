@@ -26,6 +26,7 @@ end
 
 local cmp_comb = {
   sprite  = create_cmp_comb(RM.sprites),
+  fonts   = create_cmp_comb(RM.fonts),
   col_beh = create_cmp_comb(require("game.beh.col_beh")),
   ai_beh  = create_cmp_comb(require("game.beh.ai_beh")),
 }
@@ -34,9 +35,9 @@ local cmp_comb = {
 --- Update combo
 ---
 ---@param imgui table
----@param cmp table cmp or cmp field
----@param combo_key string key of cmp_comb
----@param cmp_key string key of cmp second arg
+---@param cmp table cmp or cmp.field
+---@param cmp_key string key of second param cmp's field
+---@param combo_key string key of @local cmp_comb
 local function update_cmp_combo(imgui, cmp, cmp_key, combo_key)
   for j = 1, #cmp_comb[combo_key].array do
     if cmp_comb[combo_key].array[j] == cmp[cmp_key] then
@@ -76,17 +77,26 @@ function edit_cmp.render(cmp, imgui)
   cmp.w = imgui.SliderInt("ren.w", cmp.w, 0, 200)
   cmp.h = imgui.SliderInt("ren.h", cmp.h, 0, 200)
 
-  cmp.color[1],
-  cmp.color[2],
-  cmp.color[3] = imgui.ColorEdit3("cmp.color",
-  cmp.color[1],
-  cmp.color[2],
-  cmp.color[3])
+  cmp.color[1], cmp.color[2], cmp.color[3] =
+  imgui.ColorEdit3("cmp.color",
+  cmp.color[1], cmp.color[2], cmp.color[3])
 
-  update_cmp_combo(imgui, cmp, "sprite", "sprite")
+  imgui.Separator()
+
+  -- TODO
+  local sprite = RM.sprites[cmp.sprite]
+  if cmp.sprite == nil then
+    if imgui.Button("Add sprite")    then cmp.sprite = "sprite_default" end
+  else
+    if imgui.Button("Delete Sprite") then cmp.sprite = nil end
+    cmp.w, cmp.h  = sprite:getDimensions()
+  end
+
+  if cmp.sprite ~= nil then
+    update_cmp_combo(imgui, cmp, "sprite", "sprite")
+  end
   imgui.Spacing()
 
-  local sprite = RM.sprites[cmp.sprite]
   utils.imgui_canvas(imgui, sprite, 0.5, function()
     love.graphics.draw(sprite)
   end)
@@ -109,8 +119,10 @@ function edit_cmp.input(cmp, imgui)
   for key, value in pairs(cmp.gamepad) do
     imgui.Text(key .. ": " .. value)
   end
+  -- TODO
   -- imgui.Text("keys " .. table.dump(cmp.keys))
   -- imgui.Text("gamepad " .. table.dump(cmp.gamepad))
+  -- imgui.Text("mouse " .. table.dump(cmp.gamepad))
 end
 
 function edit_cmp.ai(cmp, imgui)
@@ -120,12 +132,32 @@ function edit_cmp.ai(cmp, imgui)
   imgui.SliderInt2("aim", cmp.aim.x, cmp.aim.y, 0, S_H)
 end
 
+local col_fit_sprite = false
 function edit_cmp.collision(cmp, imgui)
   imgui.Text("cmp.col")
+  col_fit_sprite = imgui.Checkbox("Fit sprite", col_fit_sprite)
+
   cmp.w = imgui.SliderInt("col.w", cmp.w, 0, 200)
   cmp.h = imgui.SliderInt("col.h", cmp.h, 0, 200)
   update_cmp_combo(imgui, cmp, "beh", "col_beh")
 
+end
+
+-- TODO
+function edit_cmp.widget(cmp, imgui)
+  imgui.Text("cmp.wid")
+  cmp.w = imgui.SliderInt("wid.w", cmp.w, 0, 200)
+  cmp.h = imgui.SliderInt("wid.h", cmp.h, 0, 200)
+
+  cmp.text_color[1], cmp.text_color[2], cmp.text_color[3] =
+  imgui.ColorEdit3("cmp.color",
+  cmp.text_color[1], cmp.text_color[2], cmp.text_color[3])
+
+  -- cmp.text_size  = imgui.InputInt("text_size", cmp.text_size)
+  imgui.Text(RM.fonts[cmp.text_font]:getHeight())
+  update_cmp_combo(imgui, cmp, "text_font", "fonts")
+
+  cmp.text = imgui.InputText("text", cmp.text, 128)
 end
 
 -------------------------------------------------
@@ -134,7 +166,9 @@ end
 
 local function animation(cmp_ani, cmp_ren, imgui)
   if imgui.BeginTabItem("animation") then
+    if not cmp_ren then imgui.Text("no render") return end
     local sprite = RM.sprites[cmp_ren.sprite]
+    if sprite == nil then imgui.Text("No sprite") return end
     local s_w, s_h = sprite:getDimensions()
 
     cmp_ani.vel = imgui.InputFloat("anim vel", cmp_ani.vel, 0.1)
@@ -200,7 +234,7 @@ return function(EM, SM, imgui, num)
       end
     end
   end
-  if table.has_keys(entity.cmps, {"animation", "render"}) then
+  if table.has_keys(entity.cmps, {"animation" }) then
     animation(entity.cmps.animation, entity.cmps.render, imgui)
   end
   imgui.EndTabBar()
