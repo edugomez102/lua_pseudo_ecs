@@ -17,14 +17,29 @@ Simplification of an ECS engine using lua tables and the love2d library.
 
 love2d library is needed.
 
-run `love .` on main directory.
+## Editor mode
 
-## Editor branch
+run `love .` on main directory to launch editor mode.
+You can play around with it but some features may be broken.
 
-To run the imgui editor, build love-imgui from this this repo https://github.com/Keyslam/love-imgui  
-Then add `imgui.so` to the main directory.
+## Release mode
+
+run `love . release` on main directory to launch the game.
+Only one scene can be played at the moment, you can change the default scene in `main.lua`.
+
+```lua
+SM:init(Game)
+-- TODO default scene
+Game:load_scene(EM, "<TYPE SCENE NAME>")
+```
+
+## Git lfs
+
+binary files are managed by git lfs.
+
 
 # Shipping 🚢
+
 - **Windows**: Dive into the `scripts\` folder and run the `ship_windows.bat` (double-click is fine) 
 
 # Folder Structure
