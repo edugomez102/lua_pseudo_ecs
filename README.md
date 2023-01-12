@@ -1,4 +1,6 @@
 
+# Last changes in `editor` branch !!
+
 # ECS like lua game engine
 
 Simplification of an ECS engine using lua tables and the love2d library.
