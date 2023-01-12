@@ -130,7 +130,6 @@ return {
         animation = {
           frame = 71,
           margin = 69,
-          sprite = "mario",
         },
         render = {
           w = 52,
